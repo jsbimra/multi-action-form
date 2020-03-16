@@ -1,0 +1,166 @@
+.footer-background {
+    object-fit: cover
+}
+
+.footer--container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    & a {
+        color: #fff;
+    }
+}
+
+.footer-atas {
+    background-image: url(/images/footer-bg.jpg);
+    padding-top: 64px;
+    padding-bottom: 64px;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    background-position: center center;
+    background-size: cover;
+    height: 368px
+}
+
+.footer-atas .ftitle {
+    color: #FFFFFF;
+    font-family: "AxiataBold";
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 8px
+}
+
+.footer-atas .fkonten {
+    color: #FFFFFF;
+    font-family: "AxiataBook";
+    font-size: 16px;
+    line-height: 24px
+}
+
+.footer-atas .fkontenphone {
+    color: #FFFFFF;
+    font-family: "AxiataBook";
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 16px
+}
+
+.footer-atas .borderSamping {
+    border-left: solid 1px rgba(255, 255, 255, 0.2);
+    border-right: solid 1px rgba(255, 255, 255, 0.2);
+    padding: 0 25px
+}
+
+.footer-atas .martop40 {
+    margin-top: 40px
+}
+
+.footer-atas .paddingleft80 {
+    padding-left: 80px
+}
+
+.footer-atas .paddingright80 {
+    padding-right: 80px
+}
+
+.footer-atas ul.sosmed li {
+    float: left;
+    margin-left: 12px;
+    list-style-type: none
+}
+
+.footer-atas ul.sosmed li:first-child {
+    padding-left: 0;
+    margin-left: 0
+}
+
+.footer-atas ul.sosmed li a img {
+    width: 40px;
+    height: 40px
+}
+
+.footer-atas ul.quick li {
+    float: none !important;
+    display: block;
+    line-height: 150%;
+    margin: 8px 0
+}
+
+#bawah {
+    background-color: #FFFFFF
+}
+
+.footer-bawah {
+    margin: 0;
+    position: relative;
+    padding-inline-start: 0;
+    padding-left: 15px
+}
+
+.footer-bawah li:first-child {
+    padding-left: 0
+}
+
+.footer-bawah li {
+    display: inline;
+    margin: 0;
+    position: relative
+}
+
+.footer-bawah li a {
+    display: inline-flex;
+    color: #000;
+    text-decoration: unset
+}
+
+.copyright {
+    color: #194396;
+    font-family: "AxiataBold";
+    font-size: 12px;
+    line-height: 24px
+}
+
+.borderSamping {
+    border-left: solid 0.5px #3056A0;
+    border-right: solid 0.5px #3056A0;
+    padding: 0 60px
+}
+
+.paddingleft40 {
+    padding-left: 80px
+}
+
+.paddingright40 {
+    padding-right: 80px
+}
+
+section#bawah {
+    padding: 12px 0
+}
+
+section#bawah li {
+    padding: 0 16px;
+    border-right: thin solid #3056A0
+}
+
+section#bawah li:first-child {
+    padding-left: 0
+}
+
+section#bawah li a {
+    color: #194396;
+    text-decoration: underline;
+    font-size: 12px
+}
+
+section#bawah li:last-child {
+    border-right: none
+}
+
+section#bawah .copy {
+    color: #194396;
+    font-weight: 700;
+    font-size: 12px
+}

@@ -1,0 +1,63 @@
+.rsvp-form-wrapper {
+
+    h1 {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgb(79, 98, 148);
+    }
+
+    form {
+
+        font-size: 14px;
+        .col-form-label {
+            color: #333339;
+        }
+
+        .button.button--axiata {
+            color: #fff;
+            display: inline-block;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 36px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-right: 5px;
+        }
+
+        .file-box {
+            padding: 0;
+            background-color: #fff;
+            position: relative;
+            .input-file {
+                width: 0;
+                height: 0;
+                visibility: hidden;
+            }
+            .input-file-label {
+                display: inline-block;
+            }
+        }
+
+        .file-info {
+            background: #99999C;
+            padding: 0.4em 1em;
+
+            & p {
+                font-size: 10px;
+                color: #fff;
+            }
+        }
+
+        p {
+            color: #bf1650;
+        }
+        
+        p::before {
+            display: inline;
+            content: "⚠";
+            color: #bf1650;
+        }
+    }
+}

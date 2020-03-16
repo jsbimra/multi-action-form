@@ -1,0 +1,310 @@
+$h1__base-size: 3em;
+$h2__base-size: 2em;
+$h3__base-size: 1.3em;
+$h4__base-size: 1em;
+$paragraph__lead-size: 1.25em;
+$body__text-size: 1em;
+$font__size-button: 1em;
+$note__size: .625em;
+$border-radius: 0.25em;
+$margin__px-lg: 2em;
+$padding__px-xs: 0.5em;
+$padding__px-sm: 1.2em;
+$padding__px-md: 1.75em;
+$padding__px-lg: 2.5em;
+
+$margin__px-xs: 0.5em;
+$margin__px-sm: 1.1em;
+$margin__px-md: 1.5em;
+$space__lg: 3.5em;
+$space__md: 3em;
+$space__sm: 2.5em;
+$space__xs: 1em;
+$slant__height: 40px;
+
+$color__axiata: linear-gradient(#ee3e7e, #f15912);
+$color__single_axiata: #ee3e7e;
+$color__secondary: #164396;
+$color__blue: #164396;
+$color__turquoise: #00d2a0;
+$color__gold: #ccac50;
+$color__yellow: #f7941e;
+$color__orange: #f15a22;
+$color__purple: #7b1b67;
+$color__magenta: #ee3e80;
+$color__black: #000007;
+$color__white: #ffffff;
+$color__lightgrey: #e5e5e6;
+$color__grey: #cecece;
+$color__lightgray: #F5F5F5;
+$color__darkgrey: #333339;
+$color__background: #f2f2f2;
+$color__royalblue: #164396;
+$color__turquoise: #00d2a0;
+$color__red: #c40d42;
+$color__prio--grey: #99999c;
+
+// gradient-prism xl
+$color__gradient-blueturquoise:linear-gradient(#164396, #00d2a0);
+$color__gradient-turquoise:linear-gradient(#00d2a0, #164396);
+$color__gradient-goldblacktransparent:linear-gradient(rgba(0, 0, 7, 0), rgba(153, 135, 83, 1));
+$color__gradient-green: linear-gradient(#00d2a0, #00d2a0);
+// gradient-prism axiata
+$color__gradient-blueyellow:linear-gradient(#164396, #f7941e);
+$color__gradient-yelloworange:linear-gradient(#f7941e, #f15a22);
+$color__gradient-orangepurple:linear-gradient(#f15a22, #7b1b67);
+$color__gradient-purplemagenta:linear-gradient(#7b1b67, #ee3e80);
+
+$color__gradient-purpleturquoise:linear-gradient(#7b1b67, #19becf);
+$color__gradient-bluemagenta:linear-gradient(#164396, #ee3e80);
+$color__gradient-bluegreen:linear-gradient(#164396, #b3d334);
+$color__gradient-purpleorange:linear-gradient(#7b1b67, #f7941e);
+$color__gradient-purplegreen:linear-gradient(#7b1b67, #b3d334);
+$color__gradient-blackgold:linear-gradient(#000007, #998753);
+
+$color__gradient-magentaorange:linear-gradient(to right, #ee3e80, #f15a22);
+$color__gradient-bluetransparent:linear-gradient(rgba(22, 67, 150, 0), rgba(22, 67, 150, 1));
+$color__gradient-goldtransparent:linear-gradient(rgba(204, 173, 80, 0), rgba(204, 173, 80, 1));
+$color__gradient-purpletransparent:linear-gradient(rgba(113, 48, 145, 0), rgba(113, 48, 145, 1));
+$color__gradient-bluetransparent:linear-gradient(rgba(22, 67, 150, 0), rgba(22, 67, 150, 1));
+$color__gradient-blacktransparent:linear-gradient(rgba(0, 0, 7, 0), rgba(0, 0, 7, 1));
+
+//slant-color
+//1 neutral
+$color__black20 : rgba(0, 0, 7, 0.2);
+$color__black10 : rgba(0, 0, 7, 0.1);
+$color__softgrey: #f7f7f7;
+$bg--light : #f2f2f2;
+$bg--lighter: #f5f5f5;
+$bg--grey : #e5e5e6;
+$bg--dark : #cccccd;
+
+//prism & slant background
+.gold {
+    background: $color__gold;
+}
+
+.orange {
+    background: $color__orange;
+}
+
+.yellow {
+    background: $color__yellow;
+}
+
+.purple {
+    background: $color__purple;
+}
+
+.magenta {
+    background: $color__magenta;
+}
+
+.black {
+    background: $color__black;
+}
+
+.white {
+    background: $color__white;
+}
+
+.lightgray {
+    background: $color__lightgray;
+}
+
+.grey {
+    background: $color__darkgrey;
+}
+
+.darkgrey {
+    background: $color__background;
+}
+
+.royalblue {
+    background: $color__royalblue;
+}
+
+.turquoise {
+    background: $color__turquoise;
+}
+
+.blueturquoise {
+    background: $color__gradient-blueturquoise;
+}
+
+.turquoiseblue {
+    background: $color__gradient-turquoise;
+}
+
+.blueyellow {
+    background: $color__gradient-blueyellow;
+}
+
+.yelloworange {
+    background: $color__gradient-yelloworange;
+}
+
+.orangepurple {
+    background: $color__gradient-orangepurple;
+}
+
+.purplemagenta {
+    background: $color__gradient-purplemagenta;
+}
+
+.purpleturquoise {
+    background: $color__gradient-purpleturquoise;
+}
+
+.bluemagenta {
+    background: $color__gradient-bluemagenta;
+}
+
+.bluegreen {
+    background: $color__gradient-bluegreen;
+}
+
+.purpleorange {
+    background: $color__gradient-purpleorange;
+}
+
+.purplegreen {
+    background: $color__gradient-purplegreen;
+}
+
+.blackgold {
+    background: $color__gradient-blackgold;
+}
+
+.magentaorange {
+    background: $color__gradient-magentaorange;
+}
+
+.bluetransparent {
+    background: $color__gradient-bluetransparent;
+}
+
+.goldtransparent {
+    background: $color__gradient-goldtransparent;
+}
+
+.purpletransparent {
+    background: $color__gradient-purpletransparent;
+}
+
+.bluetransparent {
+    background: $color__gradient-bluetransparent;
+}
+
+.blacktransparent {
+    background: $color__gradient-blacktransparent;
+}
+
+//only slant
+.red {
+    background: $color__red;
+}
+
+.blacknetral20 {
+    background: $color__black20;
+}
+
+.blacknetral10 {
+    background: $color__black10;
+}
+
+.softgrey {
+    background: $color__softgrey;
+}
+
+.white {
+    background: $color__white;
+}
+
+.slantlight {
+    background: $bg--light;
+}
+
+.slantlighter {
+    background: $bg--lighter;
+}
+
+.slantgrey {
+    background: $bg--grey;
+}
+
+.slantdark {
+    background: $bg--dark;
+}
+
+//device color
+
+.blue {
+    background: $color__blue;
+}
+
+//section & slant color 
+.bg--blue {
+    background: $color__royalblue;
+}
+
+.bg--black {
+    background: $color__black;
+}
+
+.bg--white {
+    background: $color__white;
+}
+
+.bg--lightgray {
+    background: $color__lightgray;
+}
+
+.bg--inactive {
+    background: $color__prio--grey;
+}
+
+
+//overlay color 
+.overlay-grey {
+    background-color: rgba(103, 137, 171, 0.702);
+}
+
+.overlay-pink {
+    background-color: rgba(238, 62, 127, 0.702);
+}
+
+.overlay-azure {
+    background-color: rgba(25, 186, 204, 0.702);
+}
+
+.overlay-gold {
+    background-color: rgba(204, 173, 81, 0.702);
+}
+
+.overlay-orange {
+    background-color: rgba(240, 89, 34, 0.702);
+}
+
+.overlay-greybold {
+    background-color: rgba(103, 137, 171, 0.85);
+}
+
+.overlay-pinkbold {
+    background-color: rgba(238, 62, 127, 0.85);
+}
+
+.overlay-azurebold {
+    background-color: rgba(25, 186, 204, 0.85);
+}
+
+.overlay-goldbold {
+    background-color: rgba(204, 173, 81, 0.85);
+}
+
+.overlay-orangebold {
+    background-color: rgba(240, 89, 34, 0.85);
+}
+
+
+@import 'button';

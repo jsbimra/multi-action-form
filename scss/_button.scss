@@ -1,0 +1,170 @@
+
+.button {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    appearance: none;
+    border: 0;
+    outline: 0;
+    text-transform: uppercase;
+    // padding: ($padding__px-sm - .55em) 0px;
+    font-size: $font__size-button;
+    box-shadow: 0 2px 3px 1.25px rgba(0, 0, 0, 0.1);
+    border-radius: 2.5px;
+    font-weight: 500;
+    // height: 48px;
+    cursor: pointer;
+
+    &:focus {
+        outline: 0;
+        border: 0;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+    }
+
+    &:hover:after {
+        opacity: 0.2;
+    }
+
+    &[disabled] {
+        background: $color__grey;
+        cursor: not-allowed;
+    }
+
+    &.button--1 {
+        width: 96px;
+        height: 48px;
+        clip-path: polygon(50% 10%, 54% 0, 100% 0, 100% 100%, 0 100%, 0 0, 46% 0);
+        -webkit-clip-path: polygon(50% 10%, 54% 0, 100% 0, 100% 100%, 0 100%, 0 0, 46% 0);
+    }
+
+    &.button--2 {
+        width: 152px;
+        height: 48px;
+        clip-path: polygon(50% 10%, 52.5% 0, 100% 0, 100% 100%, 0 100%, 0 0, 47.5% 0);
+        -webkit-clip-path: polygon(50% 10%, 52.5% 0, 100% 0, 100% 100%, 0 100%, 0 0, 47.5% 0);
+    }
+
+    &.button--full {
+        width: 100%;
+        margin: 0 15px;
+    }
+
+    &.button--primary {
+        background-size: cover;
+        background: var(--button__bg);
+        background-position: center bottom;
+        color: var(--button__color);
+    }
+
+    &.button--icon {
+        width: 40px;
+        padding: 0.55em 0;
+        clip-path: polygon(50% 10%, 60% 0, 100% 0, 100% 100%, 0 100%, 0 0, 40% 0);
+        -webkit-clip-path: polygon(50% 10%, 60% 0, 100% 0, 100% 100%, 0 100%, 0 0, 40% 0);
+
+        img {
+            max-width: 24px;
+        }
+    }
+
+    &.button--axiata {
+        background-size: cover;
+        background-image: $color__gradient-magentaorange;
+        background-position: center bottom;
+        color: #fff;
+    }
+
+    &.button--transparent {
+        background-color: #fff;
+        border: 1px solid #eaeaea;
+    }
+
+    &.button__arrow--transparent {
+        background-color: transparent;
+        // border: 1px solid #eaeaea;
+        color: #fff;
+
+        &:hover:after {
+            opacity: 0;
+        }
+    }
+
+
+
+    &.button--min-wide {
+        padding-left: $padding__px-md;
+        padding-right: $padding__px-md;
+    }
+
+    &.button--xl {
+        background-color: $color__turquoise;
+        color: $color__blue;
+    }
+
+    &.button--prio {
+        background-color: $color__black;
+        color: $color__gold;
+    }
+
+    &.active {
+        font-weight: bold;
+        color: $color__royalblue;
+    }
+
+    &.button--noradius {
+        border-radius: 0 !important;
+    }
+}
+
+button,
+input[type="submit"] {
+  background: #ec5990;
+  color: white;
+  text-transform: uppercase;
+  border: none;
+  margin-top: 40px;
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 100;
+  letter-spacing: 5px;
+  text-align: center;
+}
+
+button,
+input[type="submit"]:hover {
+  background: #bf1650;
+}
+
+button,
+input[type="button"]:active,
+input[type="submit"]:active {
+  transition: 0.3s all;
+  transform: translateY(3px);
+  border: 1px solid transparent;
+  opacity: 0.8;
+}
+
+input:disabled {
+  opacity: 0.4;
+}
+
+input[type="button"]:hover {
+  transition: 0.3s all;
+}
+
+input[type="button"],
+input[type="submit"] {
+  -webkit-appearance: none;
+}

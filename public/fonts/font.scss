@@ -1,0 +1,148 @@
+// @font-face {
+// 	font-family: 'AxiataBook';
+// 	src: url('./AxiataBook.ttf') format('truetype'),
+// 		url('./AxiataBook.woff') format('woff'),
+// 		url('./AxiataBook.woff2') format('woff2');
+// }
+
+// @font-face {
+// 	font-family: 'AxiataBold';
+// 	src: url('./AxiataBold.ttf') format('truetype'),
+// 		url('./AxiataBold.woff') format('woff'),
+// 		url('./AxiataBold.woff2') format('woff2');
+// }
+
+// @font-face {
+// 	font-family: 'AxiataMedium';
+// 	src: url('./AxiataMedium.ttf') format('truetype'),
+// }
+
+@font-face {
+  font-family: 'AxiataBook';
+  src: url("./AxiataBook.ttf") format("truetype"), url("./AxiataBook.woff") format("woff"), url("./AxiataBook.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: 'AxiataBold';
+  src: url("./AxiataBold.ttf") format("truetype"), url("./AxiataBold.woff") format("woff"), url("./AxiataBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: 'AxiataMedium';
+  src: url("./AxiataMedium.ttf") format("truetype"), url("./AxiataMedium.woff") format("woff");
+}
+
+@font-face {
+  font-family: 'Axiata';
+  src: url("./AxiataMedium.ttf") format("truetype"), url("./AxiataMedium.woff") format("woff");
+}
+
+@font-face {
+  font-family: 'JoeyHeavy';
+  src: url('../assets/fonts/JoeyHeavy/FSJoey-Heavy.eot'),
+    /* IE9 Compat Modes */
+    url('../assets/fonts/JoeyHeavy/FSJoey-Heavy.eot#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+    url('../assets/fonts/JoeyHeavy/FSJoey-Heavy.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('../assets/fonts/JoeyHeavy/FSJoey-Heavy.woff') format('woff'),
+    /* Pretty Modern Browsers */
+    url('../assets/fonts/JoeyHeavy/FSJoey-Heavy.ttf') format('truetype'),
+    /* Safari, Android, iOS */
+    url('../assets/fonts/JoeyHeavy/FSJoey-Heavy.svg#svgFontName') format('svg');
+  /* Legacy iOS */
+  font-weight: 900;
+
+}
+
+.font-axiata-bold {
+  font-family: 'AxiataBold' !important;
+}
+
+.font-axiata-medium {
+  font-family: 'AxiataMedium' !important;
+}
+
+.font-axiata-book {
+  font-family: 'AxiataBook' !important;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'AxiataBold';
+  line-height: 1.3em;
+  letter-spacing: 3px;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+html,
+body {
+  font-size: 14px;
+  // line-height: 1.5em;
+  letter-spacing: 1px;
+}
+
+a,
+a:link {
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: unset;
+}
+
+b,
+strong {
+  font-weight: 700;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    letter-spacing: 1px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+}
