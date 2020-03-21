@@ -1,18 +1,19 @@
+//Css import
 import styles from './layout.scss';
 
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+//React
+import React from 'react';
+import PropTypes from 'prop-types';
+
+//i18n
+import { i18n, withTranslation } from '../i18n'
+import { useTranslation } from 'react-i18next';
+
+//Custom components
 import Header from './Header';
 import Footer from './Footer';
-import useSWR from 'swr';
 
-import { useOvermind } from '../overmind';
-import RSVPForm from '../components/RSVPForm';
-
-//translation
-// import { useTranslation } from 'react-i18next';
-
-
+//Custom styles example
 // const layoutStyle = {
 //     margin: 20,
 //     padding: 20,
@@ -22,41 +23,33 @@ function fetcher(url) {
     return fetch(url).then(r => r.json())
 }
 
-export default function Layout(props) {
-    // const {t, i18n } = useTranslation();
-    const { query } = useRouter();
+const changeLanguage = (lng = 'id') => {
+    // console.log('changing to', lng);
+    i18n.changeLanguage(lng);
+}
 
-    const { data, error } = useSWR(`/api/randomQuote${query.author ? '?author=' + query.author : ''}`, fetcher);
+function Layout(props) {
 
-    const author = data?.author;
-    let quote = data?.quote;
-
-    if (!data) quote = "Loading...";
-    if (error) quote = "Failed to fetch quotes";
-
-    const { state, actions } = useOvermind();
-    // console.log('state overmind', state);
-    
     return (
         <div>
-            {/* <Header title={t("title")} /> */}
-            <Header />
-            <div className="container pt-4 pb-4">
-                <div className="mb-5">
+            <Header handleLanguageChange={changeLanguage} />
+
+            <div className="container mt-4 mb-4 pt-4 pb-4 layout-container">
+                {/* 
+                    To show quote example
+                    <div className="mb-5">
                     <div className={styles.quote}>{quote}</div>
                     {author && <span className={styles.author}>- {author}</span>}
 
                     <Link href="/rsvp-scanner">
                         <a>Goto RSVP Scanner</a>
                     </Link>
-                </div>
+                </div> */}
 
-                <RSVPForm></RSVPForm>
 
                 <style jsx>{`
                     
                 `}</style>
-
 
                 {props.children}
             </div>
@@ -64,6 +57,14 @@ export default function Layout(props) {
         </div>
     );
 
-}
+};
 
-;
+export default withTranslation(['common', 'rsvp'])(Layout);
+
+// Layout.getInitialProps = async () => ({
+//     namespacesRequired: ['common', 'rsvp'],
+// })
+
+// Layout.propTypes = {
+//     t: PropTypes.func.isRequired,
+// }

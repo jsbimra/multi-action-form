@@ -9,9 +9,8 @@ export function captchaVerifyCallback(cresponse) {
     $gCaptchaResponseSubject.next(cresponse);
 }
 // var window;
-
-    window['captchaSiteKey'] = null;
-    window['onLoadCaptchaExplicitCallback'] = onLoadCaptchaExplicitHandler;
+window['captchaSiteKey'] = null;
+window['onLoadCaptchaExplicitCallback'] = onLoadCaptchaExplicitHandler;
 // For new way of implementation of captcha code test
 // window.onload = function() {
 //     window.grecaptcha.ready(function() {
@@ -23,7 +22,7 @@ export function captchaVerifyCallback(cresponse) {
 // };
 
 export function onLoadCaptchaExplicitHandler() {
-    console.log('onLoadCaptchaExplicitCallback callback fired');
+    console.log('Captcha: onLoadCaptchaExplicitCallback callback fired');
 
     if (!window['grecaptcha']) {
         console.error('Not found grecaptcha object or g-recaptcha element not found ');
@@ -36,17 +35,33 @@ export function onLoadCaptchaExplicitHandler() {
             callback: captchaVerifyCallback,
         });
     }
+};
 
-    if (document.getElementById('captchaDesktop')) {
-        window.grecaptcha.render('captchaDesktop', {
+
+export function reRenderCaptcha() {
+    console.log('Captcha: reRenderCaptcha callback fired');
+
+    if (!window['grecaptcha']) {
+        console.error('Not found grecaptcha object or g-recaptcha element not found ');
+        return;
+    }
+
+    if (document.getElementById('gRecaptchaElement')) {
+        window.grecaptcha.render('gRecaptchaElement', {
             sitekey: window['captchaSiteKey'],
             callback: captchaVerifyCallback,
         });
     }
 };
 
+export function removeCaptcha() {
+    if (typeof window.grecaptcha !== 'undefined' && window.grecaptcha && window.grecaptcha.reset) { grecaptcha.reset(); }
+    // if (document.querySelector('[id*="gCaptchaDynamicScript_"]')) document.querySelector('[id*="gCaptchaDynamicScript_"]').remove();
+}
+
 export function reCaptchaInitialize(version) {
     console.log('reCaptchaInitialize invoked!', version);
+
     const ver = version.toLowerCase();
     let renderScript;
     let siteKey = ver === 'v3' ? CAPTCHA_SITE_KEY_V3 : CAPTCHA_SITE_KEY_V2;
@@ -82,6 +97,7 @@ export function reCaptchaInitialize(version) {
         }
 
         document.getElementsByTagName("head")[0].appendChild(node);
+
     }
 }
 
@@ -102,7 +118,7 @@ export const verifyCaptcha = (eleName) => {
         // console.error('captcha response error! ', resp );
         // this.recaptchaErrorFlag = true;
         validCaptcha = false;
-       document.querySelector('input[name='+eleName+']').value = resp;
+        document.querySelector('input[name='+eleName+']').value = resp;
       }
     },
       err => console.error('captcha response error! ', err)

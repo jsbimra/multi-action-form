@@ -5,12 +5,34 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	// font-size: 100%;
 	// font: inherit;
 	vertical-align: baseline;
-	line-height: 1.5em;
+	line-height: normal;
 }
 
 body {
-    background: #fff;
+    // background-image: url(/images/footer-bg.jpg);
+	background: #fff url(/images/body-background.jpg) 0 0 no-repeat;
+	background-size: cover;
+	color: #ffffff;
+	font-family: 'AxiataBook';
+	font-size: 14px;
+	// line-height: 20px;
+	letter-spacing: 1px;
 }
 
 @import './../scss/xl.core.scss';
 @import './../scss/overwrite.scss';
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+	font-family: 'AxiataBold';
+	line-height: 44px;
+	letter-spacing: 3px;
+}
+
+h1 {
+	font-size: 36px;
+}
+
+h2 {
+	margin-top: 35px;
+}

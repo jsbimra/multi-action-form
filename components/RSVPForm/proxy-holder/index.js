@@ -1,29 +1,32 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { useForm, ErrorMessage, FormContext } from 'react-hook-form';
 import { useOvermind } from '../../../overmind';
 
 import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS } from '../../../util/constants';
-import { reCaptchaInitialize, verifyCaptcha } from '../../../util/index';
+import { reCaptchaInitialize, verifyCaptcha, reRenderCaptcha } from '../../../util/index';
 import RSVPProxyHolderSubFields from './sub-fields';
+import { withTranslation } from 'react-i18next';
+import { objectToFormData } from 'object-to-formdata';
 
-export default function RSVPProxyHolder(props) {
+function RSVPProxyHolder({ props }) {
 
     const { state, actions } = useOvermind();
-    // const { methods.register, errors, handleSubmit, watch, formState } = useForm({
-    //     mode: 'onChange',
-    //     validateCriteriaMode: "all"
-    // });
+    const [verifyPostData, setVerifyPostData] = useState(undefined);
 
     const methods = useForm({
         mode: 'onChange',
         validateCriteriaMode: "all"
     });
-console.log(methods);
 
-    const { title, data } = state.rsvp.proxyHolder;
+    // console.log("props props ", state.rsvp.proxyholder);
+
+    const { title } = props;
     const {
         name,
-        passport,
+        optionsKTPOrPassport,
+        numberKTPOrPassport,
         address,
         numberOfShares,
         phoneNumber,
@@ -32,8 +35,6 @@ console.log(methods);
         uploadArticleOfAssociation,
         uploadProxy,
         proxyOfShareHolderIdentity,
-        captcha,
-        userAcceptance,
         submitButton,
         infoText,
         successMsgTitle,
@@ -41,43 +42,79 @@ console.log(methods);
         failedMsgTitle,
         failedMsg,
         redirectURL
-    } = data || {};
+    } = state.rsvp.proxyholder || {};
 
+    // console.log('numberKTPOrPassport data ', numberKTPOrPassport);
+    // const nameKTPOrPassport = state.rsvp.ktpOrPassport == 1 ? numberKTPOrPassport.ktp.name : numberKTPOrPassport.passport.name;
 
+    //Watches
     const watchHidCaptcha = methods.watch("hidGRecaptchaElement");
 
     const onSubmit = (data, e) => {
-        console.log("Form submitted ", data, e)
+        console.log("Form submitted ", data, e, verifyPostData);
+        if (data && verifyPostData) {
+            const newData = { ...data, ...verifyPostData };
+            console.log("newData data formed", newData);
+            const formData = objectToFormData(newData);
+            //To log formData purpose only, as offically formData doesn't log in browser constole
+            // console.log("Form data formed", formData);
+            // for (var key of formData.entries()) {
+            //     console.log(key[0] + ', ' + key[1])
+            // }
+
+            actions.rsvp.handleSubmitFormRequest(formData);
+        }
     };
+
+    // const handleOptionChange = (e) => {
+    //     // console.log('handle options change triggered ', nameKTPOrPassport)
+    //     actions.rsvp.updateKTPOrPassportState({ stateName: 'ktpOrPassport', value: e.target.value });
+    // }
+
+    const handleOnVerifyPostData = data => {
+
+        if (data) setVerifyPostData(data);
+    }
+    let renderCaptchaOnce = 0;
 
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
         // if(!window.grecaptcha) reCaptchaInitialize('v2');
-
         // console.log('watchHidCaptcha', watchHidCaptcha);
-
     }, [watchHidCaptcha]);
 
-    useEffect(() => {
-        // if (state.rsvp.isSIDKTPVerified) {
-        //     // verifyCaptcha
-        //     verifyCaptcha(captcha.hiddenField.name);
-        // }
-        // console.log('watchNoKtur', watchNoKtur);
-        // console.log('watchNoSID', watchNoSID);
+    //for state.rsvp.isSIDKTPVerified
+    // useEffect(() => {
+    //     // console.log("ProxyHolder: effect fired when: isSIDKTPVerified value changed");
 
-        // if ((watchNoKtur && watchNoKtur.length > KTP_SID_SEARCH_HIT_MIN_CHARS) && (watchNoSID && watchNoSID.length > KTP_SID_SEARCH_HIT_MIN_CHARS)) {
-        //     console.log('trigger api call to verify use is having valid sid and ktp ');
+    //     //Use this when you are using isSIDKTPVerified
+    //     // if (state.rsvp.isSIDKTPVerified) {
+    //     const st = setTimeout(() => {
+    //         if (captcha.hiddenField.name) {
+    //             verifyCaptcha(captcha.hiddenField.name);
+    //         }
+    //         else {
+    //             console.error('Set data in locale for form captcha (captcha.hiddenField.name)');
+    //         }
+    //         console.log('before inc', renderCaptchaOnce)
 
-        //     // actions.rsvp.verifyValidUser();
+    //         if (renderCaptchaOnce === 0) {
+    //             renderCaptchaOnce++;
+    //             console.log('after inc', renderCaptchaOnce)
+    //             if (!window.grecaptcha) reCaptchaInitialize('v2');
+    //             if (window.grecaptcha) reRenderCaptcha();
+    //             renderCaptchaOnce++;
+    //         }
+    //     }, 0);
 
-        //     actions.rsvp.updateSIDKTPVerifedStatus();
+    //     return () => {
+    //         clearTimeout(st);
+    //     }
+    //     // }
 
-        //     // if(window.grecaptcha) grecaptcha.reset('gRecaptchaElement');
-        // }
-        if (!window.grecaptcha) reCaptchaInitialize('v2');
+    // });
+    // }, [state.rsvp.isSIDKTPVerified]);
 
-    });
 
     return (
         <FormContext {...methods}>
@@ -94,6 +131,8 @@ console.log(methods);
                         <div className="">
                             <input id={name.name}
                                 name={name.name}
+                                defaultValue={name.value}
+                                placeholder={name.placeholder}
                                 ref={methods.register({
                                     required: name.validation.required_msg,
                                 })}
@@ -103,18 +142,51 @@ console.log(methods);
                             <ErrorMessage as="p" errors={methods.errors} name={name.name} />
                         </div>
                     </div>
+                    {/* 
+                    <div className="form-group">
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input"
+                                type="radio"
+                                id={`${optionsKTPOrPassport.name}1`}
+                                name={optionsKTPOrPassport.name}
+                                defaultValue={optionsKTPOrPassport.option1.value}
+                                defaultChecked={state.rsvp.ktpOrPassport == 1 ? true : false}
+                                onChange={handleOptionChange}
+                                ref={methods.register({ required: true })}
+                            />
+                            <label className="form-check-label" htmlFor={`${optionsKTPOrPassport.name}1`}>{optionsKTPOrPassport.option1.label}</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input"
+                                type="radio"
+                                id={`${optionsKTPOrPassport.name}2`}
+                                name={optionsKTPOrPassport.name}
+                                defaultValue={optionsKTPOrPassport.option2.value}
+                                defaultChecked={state.rsvp.ktpOrPassport == 2 ? true : false}
+                                onChange={handleOptionChange}
+                                ref={methods.register({ required: true })}
+                            />
+                            <label className="form-check-label" htmlFor={`${optionsKTPOrPassport.name}2`}>{optionsKTPOrPassport.option2.label}</label>
+                        </div>
+                    </div> */}
+
+                    {/* //For KTP or PASSPORT FIELD CHECK  */}
+                    {/* {state.rsvp.ktpOrPassport == 1 ? '' : ''} */}
 
                     <div className="form-group">
-                        <label htmlFor={passport.name} className="col-form-label">{passport.label} {passport.required ? (<span className="required">*</span>) : ''}</label>
+                        <label htmlFor={numberKTPOrPassport.name} className="col-form-label">{numberKTPOrPassport.label} {numberKTPOrPassport.required ? (<span className="required">*</span>) : ''}</label>
                         <div className="">
-                            <input id={passport.name} name={passport.name}
-                                placeholder={passport.placeholder}
+                            <input id={numberKTPOrPassport.name}
+                                name={numberKTPOrPassport.name}
+                                defaultValue={numberKTPOrPassport.value}
+                                placeholder={numberKTPOrPassport.placeholder}
                                 ref={methods.register({
-                                    required: passport.validation.required_msg
+                                    required: numberKTPOrPassport.validation.required_msg
                                 })}
                                 type="text"
-                                className="form-control" />
-                            <ErrorMessage as="p" errors={methods.errors} name={passport.name} />
+                                className="form-control"
+                            />
+                            <ErrorMessage as="p" errors={methods.errors} name={numberKTPOrPassport.name} />
                         </div>
                     </div>
 
@@ -123,6 +195,7 @@ console.log(methods);
                         <div className="">
                             <input id={address.name}
                                 name={address.name}
+                                defaultValue={address.value}
                                 placeholder={address.placeholder}
                                 ref={methods.register({
                                     required: address.validation.required_msg
@@ -138,6 +211,7 @@ console.log(methods);
                         <div className="">
                             <input id={numberOfShares.name}
                                 name={numberOfShares.name}
+                                defaultValue={numberOfShares.value}
                                 placeholder={numberOfShares.placeholder}
                                 ref={methods.register({
                                     required: numberOfShares.validation.required_msg
@@ -153,6 +227,7 @@ console.log(methods);
                         <div className="">
                             <input id={phoneNumber.name}
                                 name={phoneNumber.name}
+                                defaultValue={phoneNumber.value}
                                 placeholder={phoneNumber.placeholder}
                                 ref={methods.register({
                                     required: phoneNumber.validation.required_msg,
@@ -171,6 +246,7 @@ console.log(methods);
                         <div className="">
                             <input id={email.name}
                                 name={email.name}
+                                defaultValue={email.value}
                                 placeholder={email.placeholder}
                                 ref={methods.register({
                                     required: email.validation.required_msg,
@@ -187,7 +263,8 @@ console.log(methods);
 
                     <div className="form-group">
                         <div className="file-box">
-                            <label htmlFor={uploadID.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadID.label}</a>
+                            <label htmlFor={uploadID.name} className="input-file-label">
+                                <a className="button button--2 button--axiata">{uploadID.label}</a>
                                 {uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
                                 <input id={uploadID.name}
                                     name={uploadID.name}
@@ -196,6 +273,7 @@ console.log(methods);
                                     })}
                                     type="file"
                                     className="input-file" />
+                                {/* {} */}
                             </label>
                         </div>
                         {uploadID.fileInfoLine1 || uploadID.fileInfoLine2 ? (<div className="file-info">
@@ -246,35 +324,9 @@ console.log(methods);
                     </div>
 
                     {/* Sub fields defination from different component for proxyOfShareHolderIdentity - START */}
-                    <RSVPProxyHolderSubFields data={proxyOfShareHolderIdentity} />
-                    {/* Sub fields defination from different component - END */}
-                    <div className="clearfix">
-                        <div className="form-check form-check-inline">
-                            <input
-                                name={userAcceptance.name}
-                                id={userAcceptance.name}
-                                ref={methods.register({
-                                    required: userAcceptance.validation.required_msg
-                                })}
-                                type="checkbox"
-                                className="form-check-label" />
-                            <label
-                                htmlFor={userAcceptance.name}
-                                className="col-form-label pl-1"> {userAcceptance.label}</label>
-                        </div>
-                        <ErrorMessage as="p" errors={methods.errors} name={userAcceptance.name} />
-                    </div>
+                    <RSVPProxyHolderSubFields data={proxyOfShareHolderIdentity} onVerifyPostData={handleOnVerifyPostData} />
 
-                    <div className="form-group">
-                        <div className="g-recaptcha" id={captcha.id}></div>
-                        <input type="hidden" name={captcha.hiddenField.name} defaultValue={state.rsvp.captchaValue}
-                            ref={methods.register({
-                                required: captcha.validation.required_msg
-                            })} />
-                        <ErrorMessage as="p" errors={methods.errors} name={captcha.hiddenField.name} />
-                    </div>
-
-                    <div className="form-group text-center">
+                    {state.rsvp.isSIDKTPVerified ? (<div className="form-group text-center">
                         <div className="">
                             <button
                                 type="submit"
@@ -282,10 +334,21 @@ console.log(methods);
                                 name={submitButton.name}
                                 className="button">{submitButton.label}</button>
                         </div>
-                    </div>
+                    </div>) : null}
+
                 </React.Fragment>
                 {/* ) : (<div className="text-center text-info">{infoText}</div>)} */}
 
             </form>
         </FormContext>);
+}
+
+export default withTranslation(['common', 'rsvp'])(RSVPProxyHolder);
+
+RSVPProxyHolder.getInitialProps = async () => ({
+    namespacesRequired: ['common', 'rsvp'],
+})
+
+RSVPProxyHolder.propTypes = {
+    t: PropTypes.func.isRequired,
 }

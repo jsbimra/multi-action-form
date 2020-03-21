@@ -15,3 +15,11 @@
     color: #559834;
     font-size: 20px;
 }
+
+.layout-container {
+    min-height: 420px;
+
+    & > div {
+        transition: all ease-in .3s;
+    }
+}

@@ -3,7 +3,10 @@ header {
     background-size: cover;
     padding: 15px 0;
     position: relative;
-
+    min-height: 50px;
+    overflow: hidden;
+    vertical-align: middle;
+    
     :before {
         content: '';
         position: absolute;
@@ -17,5 +20,25 @@ header {
         backdrop-filter: blur(20px);
         filter: blur(20px);
         z-index: -1;
+    }
+
+    a {
+        color: #fff;
+    }
+
+    & .language-nav {
+        button {
+            margin: 0;
+            padding: 6px 0;
+            letter-spacing: 0px;
+            line-height: normal;
+            background-color: #fff;
+            color: black;
+            width: 35px;
+
+            &:focus {
+                outline: none;
+            }
+        }
     }
 }

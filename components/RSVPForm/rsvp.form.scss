@@ -3,15 +3,18 @@
     h1 {
         text-align: center;
         padding-bottom: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         border-bottom: 1px solid rgb(79, 98, 148);
     }
 
     form {
 
         font-size: 14px;
+
         .col-form-label {
-            color: #333339;
+            // color: #333339;
+            color: #fff;
+
         }
 
         .button.button--axiata {
@@ -28,15 +31,26 @@
 
         .file-box {
             padding: 0;
-            background-color: #fff;
+            // background-color: #fff;
             position: relative;
+
             .input-file {
                 width: 0;
                 height: 0;
                 visibility: hidden;
             }
+
             .input-file-label {
                 display: inline-block;
+                display: flex;
+                align-items: center;
+            }
+
+            & .button.button--axiata {
+                width: auto;
+                padding: 0 20px;
+                align-items: center;
+                display: flex;
             }
         }
 
@@ -52,12 +66,18 @@
 
         p {
             color: #bf1650;
+            padding-top: 4px;
+            margin-top: 3px;
+            padding: 2px 10px 0px;
+            font-size: 12px;
+
         }
-        
+
         p::before {
             display: inline;
             content: "⚠";
             color: #bf1650;
+            margin-right: 4px;
         }
     }
 }

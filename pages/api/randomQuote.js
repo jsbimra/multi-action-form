@@ -1,6 +1,8 @@
 import allQuotes from './../../quotes.json';
 
 export default (req, res) => {
+  res.setPreviewData({})
+
     const { author } = req.query;
     let quotes = allQuotes;
   
