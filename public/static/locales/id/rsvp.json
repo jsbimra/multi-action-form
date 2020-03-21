@@ -1,0 +1,672 @@
+{
+  "types": [
+    {
+      "text": "Pilih Jenis RSVP",
+      "value": ""
+    },
+    {
+      "text": "Pribadi",
+      "value": 1
+    },
+    {
+      "text": "Kesatuan",
+      "value": 2
+    },
+    {
+      "text": "Pemegang proxy",
+      "value": 3
+    }
+  ],
+  "identityType": [
+    {
+      "text": "KTP",
+      "value": ""
+    },
+    {
+      "text": "Passport",
+      "value": ""
+    }
+  ],
+  "personal": {
+    "title": "Personal",
+    "data": {
+      "numberSID": {
+        "label": "No SID/AKSes.KSEI",
+        "name": "numberSID",
+        "value": "",
+        "placeholder": "Input your SID/AKSes.KSEI number",
+        "required": true,
+        "validation": {
+          "required_msg": "SID/AKSes.KSEI number is required",
+          "minlength_msg": "Minimum 6 length is required"
+        }
+      },
+      "optionsKTPOrPassport": {
+        "name": "optionKTPPassport",
+        "required": true,
+        "option1": {
+          "label": "KTP",
+          "value": 1
+        },
+        "option2": {
+          "label": "Passport",
+          "value": 2
+        }
+      },
+      "numberKTPOrPassport": {
+        "ktp": {
+          "label": "NIK (KTP)",
+          "name": "identityNumber",
+          "value": "",
+          "required": true,
+          "placeholder": "Input your KTP number",
+          "validation": {
+            "required_msg": "NIK (KTP) is required"
+          }
+        },
+        "passport": {
+          "label": "Passport",
+          "name": "identityNumber",
+          "value": "",
+          "required": true,
+          "placeholder": "Input your Passport number",
+          "validation": {
+            "required_msg": "Passport is required"
+          }
+        }
+      },
+      "numberKTUR": {
+        "label": "No KTUR",
+        "name": "kturNumber",
+        "value": "",
+        "placeholder": "Input your KTUR number",
+        "required": true,
+        "validation": {
+          "required_msg": "KTUR number is required",
+          "minlength_msg": "Minimum 6 length is required"
+        }
+      },
+      "name": {
+        "label": "Nama",
+        "name": "name",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your name here",
+        "validation": {
+          "required_msg": "Name is required"
+        }
+      },
+      "address": {
+        "label": "Address",
+        "name": "address",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your address",
+        "validation": {
+          "required_msg": "Address is required"
+        }
+      },
+      "numberOfShares": {
+        "label": "Jumlah Saham (sesuai KTUR)",
+        "name": "numberOfStock",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your name here",
+        "validation": {
+          "required_msg": "Name is required"
+        }
+      },
+      "phoneNumber": {
+        "label": "Phone/Mobile",
+        "name": "phone",
+        "value": "",
+        "placeholder": "Input your phone number here",
+        "hint": "",
+        "required": true,
+        "validation": {
+          "required_msg": "Phone number is required",
+          "pattern_msg": "Invalid phone number"
+        }
+      },
+      "email": {
+        "label": "Email",
+        "name": "email",
+        "value": "",
+        "placeholder": "Input your email",
+        "required": true,
+        "validation": {
+          "required_msg": "Email is required",
+          "pattern_msg": "Invalid email"
+        }
+      },
+      "uploadID": {
+        "label": "Upload ID",
+        "name": "uploadID",
+        "value": "",
+        "placeholder": "No file chosen",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB.",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload your ID is required"
+        }
+      },
+      "captcha": {
+        "label": "",
+        "id": "gRecaptchaElement",
+        "hiddenField": {
+          "name": "hidGRecaptchaElement"
+        },
+        "validation": {
+          "required_msg": "Required captcha validation"
+        }
+      },
+      "userAcceptance": {
+        "label": "Check to agree xl axiata terms and conditions.",
+        "name": "userAcceptance",
+        "validation": {
+          "required_msg": "Please accept the terms and condition"
+        }
+      },
+      "submitButton": {
+        "label": "Submit",
+        "name": "btnSubmit",
+        "type": "submit",
+        "value": ""
+      },
+      "infoText": "Enter No KTUR & No SID/AKSes.KSEI to verify your status",
+      "successMsgTitle": "RSVP Personal Form Success",
+      "failedMsgTitle": "Error",
+      "successMsg": "RSVP Personal Form submitted successfully",
+      "failedMsg": "RSVP Personal Form Error",
+      "redirectURL": "http://localhost:4200/en/"
+    }
+  },
+  "entity": {
+    "title": "Entity",
+    "data": {
+      "numberSID": {
+        "label": "No SID/AKSes.KSEI",
+        "name": "numberSID",
+        "value": "",
+        "placeholder": "Input your SID/AKSes.KSEI number",
+        "required": true,
+        "validation": {
+          "required_msg": "SID/AKSes.KSEI number is required",
+          "minlength_msg": "Minimum 6 length is required"
+        }
+      },
+      "optionsKTPOrPassport": {
+        "name": "optionKTPPassport",
+        "required": true,
+        "option1": {
+          "label": "KTP",
+          "value": 1
+        },
+        "option2": {
+          "label": "Passport",
+          "value": 2
+        }
+      },
+      "numberKTPOrPassport": {
+        "ktp": {
+          "label": "NIK (KTP)",
+          "name": "identityNumber",
+          "value": "",
+          "required": true,
+          "placeholder": "Input your KTP number",
+          "validation": {
+            "required_msg": "NIK (KTP) is required"
+          }
+        },
+        "passport": {
+          "label": "Passport",
+          "name": "identityNumber",
+          "value": "",
+          "required": true,
+          "placeholder": "Input your Passport number",
+          "validation": {
+            "required_msg": "Passport is required"
+          }
+        }
+      },
+      "numberKTUR": {
+        "label": "No KTUR",
+        "name": "kturNumber",
+        "value": "",
+        "placeholder": "Input your KTUR number",
+        "required": true,
+        "validation": {
+          "required_msg": "KTUR number is required",
+          "minlength_msg": "Minimum 6 length is required"
+        }
+      },
+      "name": {
+        "label": "Nama",
+        "name": "name",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your name here",
+        "validation": {
+          "required_msg": "Name is required"
+        }
+      },
+      "address": {
+        "label": "Address",
+        "name": "address",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your address",
+        "validation": {
+          "required_msg": "Address is required"
+        }
+      },
+      "numberOfShares": {
+        "label": "Jumlah Saham (sesuai KTUR)",
+        "name": "numberOfStock",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your name here",
+        "validation": {
+          "required_msg": "Name is required"
+        }
+      },
+      "phoneNumber": {
+        "label": "Phone/Mobile",
+        "name": "phone",
+        "value": "",
+        "placeholder": "Input your phone number here",
+        "hint": "",
+        "required": true,
+        "validation": {
+          "required_msg": "Phone number is required",
+          "pattern_msg": "Invalid phone number"
+        }
+      },
+      "email": {
+        "label": "Email",
+        "name": "email",
+        "value": "",
+        "placeholder": "Input your email",
+        "required": true,
+        "validation": {
+          "required_msg": "Email is required",
+          "pattern_msg": "Invalid email"
+        }
+      },
+      "uploadID": {
+        "label": "Select",
+        "name": "uploadID",
+        "value": "",
+        "placeholder": "Upload your ID",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload your ID is required"
+        }
+      },
+      "uploadArticleOfAssociation": {
+        "label": "Select",
+        "name": "uploadBasicCalculation",
+        "value": "",
+        "placeholder": "Upload article of association",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload article of association is required"
+        }
+      },
+      "uploadProxy": {
+        "label": "Select",
+        "name": "uploadProxy",
+        "value": "",
+        "placeholder": "Upload proxy",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload proxy is required"
+        }
+      },
+      "captcha": {
+        "label": "",
+        "id": "gRecaptchaElement",
+        "hiddenField": {
+          "name": "hidGRecaptchaElement"
+        },
+        "validation": {
+          "required_msg": "Required captcha validation"
+        }
+      },
+      "userAcceptance": {
+        "label": "Check to agree xl axiata terms and conditions.",
+        "name": "userAcceptance",
+        "validation": {
+          "required_msg": "Please accept the terms and condition"
+        }
+      },
+      "submitButton": {
+        "label": "Submit",
+        "name": "btnSubmit",
+        "type": "submit",
+        "value": ""
+      },
+      "infoText": "Enter No KTUR & No SID/AKSes.KSEI to verify your status",
+      "successMsgTitle": "RSVP Entity Form Success",
+      "failedMsgTitle": "Error",
+      "successMsg": "RSVP Entity Form submitted successfully",
+      "failedMsg": "RSVP Entity Form Error",
+      "redirectURL": "http://localhost:4200/en/"
+    }
+  },
+  "proxyholder": {
+    "title": "Proxy Holder",
+    "data": {
+      "name": {
+        "label": "Nama",
+        "name": "proxyName",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your name here",
+        "validation": {
+          "required_msg": "Name is required"
+        }
+      },
+      "optionsKTPOrPassport": {
+        "name": "optionKTPPassport",
+        "required": true,
+        "option1": {
+          "label": "KTP",
+          "value": 1
+        },
+        "option2": {
+          "label": "Passport",
+          "value": 2
+        }
+      },
+      "numberKTPOrPassport": {
+        "label": "NIK (KTP)/Passport",
+        "name": "proxyIdentityNumber",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your NIK (KTP)/Passport number",
+        "validation": {
+          "required_msg": "NIK (KTP)/Passport is required"
+        },
+        "ktp": {
+          "label": "NIK (KTP)",
+          "name": "numberKTP",
+          "value": "",
+          "required": true,
+          "placeholder": "Input your KTP number",
+          "validation": {
+            "required_msg": "NIK (KTP) is required"
+          }
+        },
+        "passport": {
+          "label": "Passport",
+          "name": "numberPassport",
+          "value": "",
+          "required": true,
+          "placeholder": "Input your Passport number",
+          "validation": {
+            "required_msg": "Passport is required"
+          }
+        }
+      },
+      "address": {
+        "label": "Address",
+        "name": "proxyAddress",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your address",
+        "validation": {
+          "required_msg": "Address is required"
+        }
+      },
+      "numberOfShares": {
+        "label": "Jumlah Saham (sesuai KTUR)",
+        "name": "numberOfStock",
+        "value": "",
+        "required": true,
+        "placeholder": "Input your name here",
+        "validation": {
+          "required_msg": "Name is required"
+        }
+      },
+      "phoneNumber": {
+        "label": "Phone/Mobile",
+        "name": "proxyPhone",
+        "value": "0909090",
+        "placeholder": "Input your phone number here",
+        "hint": "",
+        "required": true,
+        "validation": {
+          "required_msg": "Phone number is required",
+          "pattern_msg": "Invalid phone number"
+        }
+      },
+      "email": {
+        "label": "Email",
+        "name": "proxyEmail",
+        "value": "test@test.com",
+        "placeholder": "Input your email",
+        "required": true,
+        "validation": {
+          "required_msg": "Email is required",
+          "pattern_msg": "Invalid email"
+        }
+      },
+      "uploadID": {
+        "label": "Upload your ID",
+        "name": "proxyUploadID",
+        "value": "",
+        "placeholder": "No file chosen",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload your ID is required"
+        }
+      },
+      "uploadArticleOfAssociation": {
+        "label": "Upload article of association",
+        "name": "proxyUploadBasicCalculation",
+        "value": "",
+        "placeholder": "No file chosen",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload article of association is required"
+        }
+      },
+      "uploadProxy": {
+        "label": "Upload proxy",
+        "name": "proxyUploadProxy",
+        "value": "",
+        "placeholder": "No file chosen",
+        "required": true,
+        "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB.",
+        "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+        "validation": {
+          "required_msg": "Upload proxy is required"
+        }
+      },
+      "proxyOfShareHolderIdentity": {
+        "label": "Proxy of (Shareholder Identity)",
+        "name": "proxyOfShareHolderIdentity",
+        "value": "",
+        "placeholder": "No file chosen",
+        "required": true,
+        "subFields": {
+          "numberSID": {
+            "label": "No SID/AKSes.KSEI",
+            "name": "numberSID",
+            "value": "",
+            "placeholder": "Input your SID/AKSes.KSEI number",
+            "required": true,
+            "validation": {
+              "required_msg": "SID/AKSes.KSEI number is required",
+              "minlength_msg": "Minimum 6 length is required"
+            }
+          },
+          "optionsKTPOrPassport": {
+            "name": "identityType",
+            "required": true,
+            "option1": {
+              "label": "KTP",
+              "value": 1
+            },
+            "option2": {
+              "label": "Passport",
+              "value": 2
+            }
+          },
+          "numberKTPOrPassport": {
+            "ktp": {
+              "label": "NIK (KTP)",
+              "name": "identityNumber",
+              "value": "",
+              "required": true,
+              "placeholder": "Input your KTP number",
+              "validation": {
+                "required_msg": "NIK (KTP) is required"
+              }
+            },
+            "passport": {
+              "label": "Passport",
+              "name": "identityNumber",
+              "value": "",
+              "required": true,
+              "placeholder": "Input your Passport number",
+              "validation": {
+                "required_msg": "Passport is required"
+              }
+            }
+          },
+          "numberKTUR": {
+            "label": "No KTUR",
+            "name": "kturNumber",
+            "value": "numberKTUR",
+            "placeholder": "Input your KTUR number",
+            "required": true,
+            "validation": {
+              "required_msg": "KTUR number is required"
+            }
+          },
+          "name": {
+            "label": "Nama",
+            "name": "name",
+            "value": "",
+            "required": true,
+            "placeholder": "Input your name here",
+            "validation": {
+              "required_msg": "Name is required"
+            }
+          },
+          "address": {
+            "label": "Address",
+            "name": "address",
+            "value": "",
+            "required": true,
+            "placeholder": "Input your address",
+            "validation": {
+              "required_msg": "Address is required"
+            }
+          },
+          "numberOfShares": {
+            "label": "Jumlah Saham (sesuai KTUR)",
+            "name": "numberOfStock",
+            "value": "",
+            "required": true,
+            "placeholder": "Input your name here",
+            "validation": {
+              "required_msg": "Name is required"
+            }
+          },
+          "phoneNumber": {
+            "label": "Phone/Mobile",
+            "name": "phone",
+            "value": "",
+            "placeholder": "Input your phone number here",
+            "hint": "",
+            "required": true,
+            "validation": {
+              "required_msg": "Phone number is required",
+              "pattern_msg": "Invalid phone number"
+            }
+          },
+          "email": {
+            "label": "Email",
+            "name": "email",
+            "value": "",
+            "placeholder": "Input your email",
+            "required": true,
+            "validation": {
+              "required_msg": "Email is required",
+              "pattern_msg": "Invalid email"
+            }
+          },
+          "uploadID": {
+            "label": "Upload ID",
+            "name": "uploadID",
+            "value": "",
+            "placeholder": "No file chosen",
+            "required": true,
+            "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+            "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+            "validation": {
+              "required_msg": "Upload your ID is required"
+            }
+          },
+          "uploadArticleOfAssociation": {
+            "label": "Upload article of association",
+            "name": "uploadBasicCalculation",
+            "value": "",
+            "placeholder": "No file chosen",
+            "required": true,
+            "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
+            "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
+            "validation": {
+              "required_msg": "Upload article of association is required"
+            }
+          },
+          "infoText": "Enter No KTUR & No SID/AKSes.KSEI to verify your status",
+          "captcha": {
+            "label": "",
+            "id": "gRecaptchaElement",
+            "hiddenField": {
+              "name": "hidGRecaptchaElement"
+            },
+            "validation": {
+              "required_msg": "Required captcha validation"
+            }
+          },
+          "userAcceptance": {
+            "label": "Check to agree xl axiata terms and conditions.",
+            "name": "userAcceptance",
+            "value": "yes",
+            "validation": {
+              "required_msg": "Please accept the terms and condition"
+            }
+          }
+        }
+      },
+      "submitButton": {
+        "label": "Submit",
+        "name": "btnSubmit",
+        "type": "submit",
+        "value": ""
+      },
+      "infoText": "Enter No KTUR & No SID/AKSes.KSEI to verify your status",
+      "successMsgTitle": "RSVP Proxy holder Form Success",
+      "failedMsgTitle": "Error",
+      "successMsg": "RSVP Proxy holder Form submitted successfully",
+      "failedMsg": "RSVP Proxy holder Form Error",
+      "redirectURL": "http://localhost:4200/en/"
+    }
+  }
+}

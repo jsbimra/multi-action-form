@@ -1,0 +1,9 @@
+{
+    "lang": "EN",
+    "title": "Pendaftaran Online / RSVP Online",
+    "headingQRScan": "Pindai kode QR",
+    "qrScan": {
+        "heading": "Pindai kode QR",
+        "resultMsg": "Tidak ada hasil"
+    }
+}

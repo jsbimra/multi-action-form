@@ -1,0 +1,8 @@
+{
+    "lang": "ID",
+    "title": "Online Registration / RSVP Online",
+    "qrScan": {
+        "heading": "Scan QR code",
+        "resultMsg": "No result - from -overmind state"
+    }
+}
