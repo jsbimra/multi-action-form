@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ErrorMessage, useFormContext } from 'react-hook-form';
 import { useOvermind } from '../../../overmind';
 import { emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS, phonePattern1, RSVP_STAKE_HOLDER_TYPE } from '../../../util/constants';
-import { verifyCaptcha } from '../../../util/index';
+import { verifyCaptcha, reCaptchaInitialize, reRenderCaptcha } from '../../../util/index';
 
 import Message from '../../Message';
 
@@ -15,6 +15,7 @@ export default function RSVPProxyHolderSubFields(props) {
         watch,
         getValues,
         setValue,
+        formState
     } = useFormContext();
 
     const [verifyPostData, setVerifyPostData] = useState(undefined);
@@ -48,11 +49,12 @@ export default function RSVPProxyHolderSubFields(props) {
     const watchNoSID = watch(numberSID.name);
     const watchPassportOrKTP = watch(nameKTPOrPassport);
     const watchHidCaptcha = watch("hidGRecaptchaElement");
+    const watchProxyIdentityNumber = watch("proxyIdentityNumber")
 
-    const isSIDAndKTPOrPPValid = (watchNoSID && watchNoSID.length > KTP_SID_SEARCH_HIT_MIN_CHARS) && (watchPassportOrKTP && watchPassportOrKTP.length > KTP_SID_SEARCH_HIT_MIN_CHARS) || false;
+    const isSIDAndKTPOrPPValid = (watchNoSID && watchNoSID.length > KTP_SID_SEARCH_HIT_MIN_CHARS) && (watchPassportOrKTP && watchPassportOrKTP.length > KTP_SID_SEARCH_HIT_MIN_CHARS) && (watchProxyIdentityNumber && watchProxyIdentityNumber.length > KTP_SID_SEARCH_HIT_MIN_CHARS) || false;
 
     const handleOptionChange = (e) => {
-        // console.log('handle options change triggered ', nameKTPOrPassport)
+        console.log('handle options change triggered ', isSIDAndKTPOrPPValid)
         actions.rsvp.updateKTPOrPassportState({ stateName: 'proxyKtpOrPassport', value: e.target.value });
 
         if (isSIDAndKTPOrPPValid) {
@@ -62,7 +64,7 @@ export default function RSVPProxyHolderSubFields(props) {
 
     const triggerSIDKTPCheck = () => {
         const formValues = getValues()
-        // console.log('formValues >>>>', formValues);
+        console.log('formValues >>>>', formValues);
 
         const queryData = {
             stakeholderType: RSVP_STAKE_HOLDER_TYPE.proxyholder, //default to one because we are loading personal component form for entity and proxy set 2 and 3 respectiviely
@@ -72,10 +74,8 @@ export default function RSVPProxyHolderSubFields(props) {
             proxyIdentityNumber: formValues.proxyIdentityNumber // file for proxyholer form only
         }
 
-        setVerifyPostData(queryData);
-
         if (queryData) {
-            console.log('verifyPostData found', queryData);
+            console.log('queryData formed', queryData);
 
             actions.triggerFetching(true);
 
@@ -88,11 +88,10 @@ export default function RSVPProxyHolderSubFields(props) {
                     data['address'] = address;
 
                     console.log("REFORM - DATA ", data);
-
                     setValuesAndReadonly(data);
 
                     //State Lift up action!
-                    props.onVerifyPostData(verifyPostData);
+                    props.onVerifyPostData(queryData);
                 }
 
                 if (resp && resp.errors) {
@@ -131,7 +130,7 @@ export default function RSVPProxyHolderSubFields(props) {
     }
 
     useEffect(() => {
-        console.log("Personal: ffect fired when: isSIDKTPVerified value changed");
+        // console.log("Personal: ffect fired when: isSIDKTPVerified value changed");
         if (state.rsvp.isSIDKTPVerified) {
             const st = setTimeout(() => {
                 // verifyCaptcha
@@ -176,7 +175,7 @@ export default function RSVPProxyHolderSubFields(props) {
                 </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group pt-3">
                 <div className="form-check form-check-inline">
                     <input className="form-check-input"
                         type="radio"
@@ -358,14 +357,16 @@ export default function RSVPProxyHolderSubFields(props) {
                         <div className="form-group">
                             <div className="file-box">
                                 <label htmlFor={uploadID.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadID.label}</a>
-                                    {uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
+                                    {state.rsvp.filesList && state.rsvp.filesList[uploadID.name] ? state.rsvp.filesList[uploadID.name] : uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
                                     <input id={uploadID.name}
                                         name={uploadID.name}
                                         ref={register({
                                             required: uploadID.validation.required_msg
                                         })}
                                         type="file"
-                                        className="input-file" />
+                                        className="input-file"
+                                        onChange={(e) => { props.onHandleFileChange('uploadID', e.target.files) }}
+                                    />
                                 </label>
                             </div>
                             {uploadID.fileInfoLine1 || uploadID.fileInfoLine2 ? (<div className="file-info">
@@ -378,14 +379,16 @@ export default function RSVPProxyHolderSubFields(props) {
                         <div className="form-group">
                             <div className="file-box">
                                 <label htmlFor={uploadArticleOfAssociation.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadArticleOfAssociation.label}</a>
-                                    {uploadArticleOfAssociation.placeholder} {uploadArticleOfAssociation.required ? (<span className="required">*</span>) : ''}
+                                    {state.rsvp.filesList && state.rsvp.filesList[uploadArticleOfAssociation.name] ? state.rsvp.filesList[uploadArticleOfAssociation.name] : uploadArticleOfAssociation.placeholder} {uploadArticleOfAssociation.required ? (<span className="required">*</span>) : ''}
                                     <input id={uploadArticleOfAssociation.name}
                                         name={uploadArticleOfAssociation.name}
                                         ref={register({
                                             required: uploadArticleOfAssociation.validation.required_msg
                                         })}
                                         type="file"
-                                        className="input-file" />
+                                        className="input-file"
+                                        onChange={(e) => { props.onHandleFileChange('uploadBasicCalculation', e.target.files) }}
+                                    />
                                 </label>
                             </div>
                             {uploadArticleOfAssociation.fileInfoLine1 || uploadArticleOfAssociation.fileInfoLine2 ? (<div className="file-info">
@@ -408,14 +411,16 @@ export default function RSVPProxyHolderSubFields(props) {
                                     className="form-check-label" />
                                 <label
                                     htmlFor={userAcceptance.name}
-                                    className="col-form-label pl-1"> {userAcceptance.label}</label>
+                                    className="col-form-label"> {userAcceptance.label}</label>
                             </div>
                             <ErrorMessage as="p" errors={errors} name={userAcceptance.name} />
                         </div>
 
                         <div className="form-group">
                             <div className="g-recaptcha" id={captcha.id}></div>
-                            <input type="hidden" name={captcha.hiddenField.name} defaultValue={state.rsvp.captchaValue}
+                            <input type="hidden" 
+                                id={captcha.hiddenField.name}
+                                name={captcha.hiddenField.name}
                                 ref={register({
                                     required: captcha.validation.required_msg
                                 })} />
@@ -423,9 +428,9 @@ export default function RSVPProxyHolderSubFields(props) {
                         </div>
                     </React.Fragment>
                 ) :
-                    state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : state.rsvp.errors && state.rsvp.errors.message ?
-                        (<Message type="error" data={state.rsvp.errors.message} />) :
-                        (<Message type="info" data={infoText} />)}
+                    state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : !state.rsvp.errors.message ? (<Message type="info" data={infoText} />) : (<Message type="error" data={state.rsvp.errors.message} />)}
+
+
 
         </div>
     );

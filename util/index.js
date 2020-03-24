@@ -2,6 +2,11 @@ import { ReplaySubject } from 'rxjs';
 import window from 'global';
 import { CAPTCHA_SITE_KEY_V3, CAPTCHA_SITE_KEY_V2, MOBILE_MAX_WIDTH } from './constants';
 
+export const scrollOptions = {
+    smooth: true,
+    delay: 300,
+};
+
 export const $gCaptchaResponseSubject = new ReplaySubject(null);
 export const $gCaptchaResponseObs = $gCaptchaResponseSubject.asObservable();
 export function captchaVerifyCallback(cresponse) {
@@ -22,7 +27,7 @@ window['onLoadCaptchaExplicitCallback'] = onLoadCaptchaExplicitHandler;
 // };
 
 export function onLoadCaptchaExplicitHandler() {
-    console.log('Captcha: onLoadCaptchaExplicitCallback callback fired');
+    // console.log('Captcha: onLoadCaptchaExplicitCallback callback fired');
 
     if (!window['grecaptcha']) {
         console.error('Not found grecaptcha object or g-recaptcha element not found ');
@@ -39,7 +44,7 @@ export function onLoadCaptchaExplicitHandler() {
 
 
 export function reRenderCaptcha() {
-    console.log('Captcha: reRenderCaptcha callback fired');
+    // console.log('Captcha: reRenderCaptcha callback fired');
 
     if (!window['grecaptcha']) {
         console.error('Not found grecaptcha object or g-recaptcha element not found ');
@@ -60,7 +65,7 @@ export function removeCaptcha() {
 }
 
 export function reCaptchaInitialize(version) {
-    console.log('reCaptchaInitialize invoked!', version);
+    // console.log('reCaptchaInitialize invoked!', version);
 
     const ver = version.toLowerCase();
     let renderScript;
@@ -101,31 +106,37 @@ export function reCaptchaInitialize(version) {
     }
 }
 
+export const resetCaptcha = (eleName) => {
+    if (window.grecaptcha && document.getElementById(eleName)) window.grecaptcha.reset();
+}
+
 export const verifyCaptcha = (eleName) => {
 
-    let validCaptcha = false;
+    let isValid = false;
+    let resp = null;
     // this.recaptchaErrorFlag = false;
 
     $gCaptchaResponseObs.subscribe((resp) => {
 
-      if (resp) {
-        // console.log('captcha response received! ', resp );
-        // this.recaptchaErrorFlag = false;
-        validCaptcha = true;
-        
-       document.querySelector('input[name='+eleName+']').value = resp;
-      } else {
-        // console.error('captcha response error! ', resp );
-        // this.recaptchaErrorFlag = true;
-        validCaptcha = false;
-        document.querySelector('input[name='+eleName+']').value = resp;
-      }
+        if (resp) {
+            // console.log('captcha response received! ', resp);
+            // this.recaptchaErrorFlag = false;
+            isValid = true;
+            resp = resp;
+            // console.log((document.getElementById(eleName)));
+            if (document.getElementById(eleName)) document.getElementById(eleName).value = resp;
+        } else {
+            // console.error('captcha response error! ', resp );
+            // this.recaptchaErrorFlag = true;
+            isValid = false;
+            if (document.getElementById(eleName)) document.getElementById(eleName).value = resp;
+        }
     },
-      err => console.error('captcha response error! ', err)
+        err => console.error('captcha response error! ', err)
     );
 
-    return validCaptcha;
-  }
+    return { resp, isValid };
+}
 
 export const isMobileDevice = () => {
     // console.log(' (window.outerWidth <= MOBILE_MAX_WIDTH)',  window.outerWidth , (window.outerWidth <= MOBILE_MAX_WIDTH));
@@ -170,5 +181,26 @@ export function isTextFound(name, searchText) {
             // console.log('not found');
             return true;
         }
+    }
+}
+
+export const saveDataToLocalStorage = payload => {
+    if (!payload || !payload.key || !payload.data) {
+        console.error('No key or data property found in payload to save data to localStorage');
+        return;
+    }
+
+    const { key, data } = payload;
+    localStorage.setItem(key, JSON.stringify(data))
+}
+
+export const getLocalStorageData = key => {
+    if (!key) {
+        console.error("key not set in payload, to fetch from localStorage");
+        return;
+    }
+
+    if (localStorage.getItem(key) && localStorage.getItem(key) !== '') {
+        return JSON.parse(localStorage.getItem(key));
     }
 }

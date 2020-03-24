@@ -1,16 +1,22 @@
 import axios from 'axios';
-import { API_BASE_URL, API_SERVICES } from '../../util/constants';
+import { API_BASE_URL, API_SERVICES, API_BASE_URL_2 } from '../../util/constants';
 // require('dotenv').config();
 
-const BASE_URL = process.env.IS_PRODUCTION ? '/api' : 'http://localhost:3000/api';
+const BASE_URL = process.env.IS_PRODUCTION ? 'http://153.92.5.209:3001' : 'http://153.92.5.209:3001';
 
-const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    timeout: 3000,
-    headers: {
-        'Content-Type': 'application/json',
-    }
-});
+// const axiosInstance = axios.create({
+//     baseURL: API_BASE_URL,
+//     headers: {
+//         'Content-Type': 'application/json',
+//     }
+// });
+
+const axiosInstance = axios.create();
+// axiosInstance.defaults.timeout = 3000; //causing not to post form data
+axiosInstance.defaults.baseURL = BASE_URL;
+axiosInstance.defaults.headers = {
+    'Content-Type': 'application/json',
+};
 
 export class Api {
     private baseUrl;
@@ -21,38 +27,62 @@ export class Api {
         this.request = request;
     }
 
-    getSIDKTPVerifiedStatus = (postData) => {
-        // return this.request.post(`${API_SERVICES.VALIDATE_SID_KTP}`, postData)
+    getSIDKTPVerifiedStatus = (payload) => {
+        // return this.request.post(`${API_SERVICES.VALIDATE_SID_KTP}`, payload)
         // return fetch(`${API_SERVICES.VALIDATE_SID_KTP}`, {
         //     method: 'post',
-        //     body: postData
+        //     body: payload
         // })
 
-        // console.log('Effects getSIDKTPVerifiedStatus post data received', postData);
-        return this.request.post(`${this.baseUrl}${API_SERVICES.VALIDATE_SID_KTP}`, postData).then(function (response) {
+        // console.log('Effects getSIDKTPVerifiedStatus post data received', payload);
+        return this.request.post(`${this.baseUrl}${API_SERVICES.VALIDATE_SID_KTP}`, payload).then(function (response) {
             return response;
         })
-            .catch(function (error) {
-                console.log(error); // Network Error
-                console.log(error.status); // undefined
-                console.log(error.code); // undefined
+            .catch(error => {
+                console.log('Connectin Error: ', error, error.response); // Network Error
+                // console.log('Connectin Error status: ', error.status); // undefined
+                // console.log('Connectin Error code: ', error.code); // undefined
             });
 
-        // return this.request.post(`${this.baseUrl}/rsvp/personal`, postData)
+        // return this.request.post(`${this.baseUrl}/rsvp/personal`, payload)
 
         // return this.request({
         //     method: 'POST',
         //     url: `${this.baseUrl}/rsvp/personal`, 
-        //     data: postData
+        //     data: payload
         // })
 
     }
 
-    submitForm = (postData) => {
-        console.log('Effects submit post data received', postData);
-        return this.request.post(`${this.baseUrl}${API_SERVICES.RSVP_REGISTRATION}`, postData)
+    submitForm = (payload) => {
+        // console.log('Effects submit post data received', payload);
+        return this.request.post(`${this.baseUrl}${API_SERVICES.RSVP_REGISTRATION}`, payload, {
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        })
+            .catch(error => {
+                console.log('Connectin Error: ', error, error.response); // Network Error
+                // console.log('Connectin Error status: ', error.status); // undefined
+                // console.log('Connectin Error code: ', error.code); // undefined
+            });
+
+        // return fetch(`${this.baseUrl}${API_SERVICES.RSVP_REGISTRATION}`, {
+        //     method: 'POST',
+        //     headers: {
+        //         "content-type": "multipart/form-data"
+        //     },
+        //     body: payload
+        // })
     }
 
+    verifyCaptchaRequest = (payload) => {
+        return this.request.post(`${API_BASE_URL_2}${API_SERVICES.CAPTCHA_VERIFICATION}`, payload, {
+            headers: {
+                "content-type": "application/x-www-form-urlencoded"
+            }
+        })
+    }
     // getRandomQuotes = () => {
     //     return this.request.get(`/randomQuote`)
     // }

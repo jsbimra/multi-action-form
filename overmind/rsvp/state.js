@@ -1,13 +1,13 @@
 
 import { i18n } from '../../i18n';
-import {t } from 'next-i18next';
+import { t } from 'next-i18next';
 
 // const types = i18n.t("types", { returnObjects: true });
 // (async() => {
-  
+
 //   const i18nData = await i18n;
 // console.log('i18n.t ', i18nData.t("types", { returnObjects: true }));
-  
+
 // })();
 
 
@@ -24,5 +24,14 @@ export const state = {
   personal: {},
   entity: {},
   proxyholder: {},
-  errors: {}
+  errors: {},
+  isSubmitSuccess: false,
+  isSubmitting: false,
+  filesList: {
+    uploadID: "",
+    uploadBasicCalculation: "",
+    proxyUploadID: "",
+    proxyUploadBasicCalculation: "",
+    proxyUploadProxy: "",
+  }
 }

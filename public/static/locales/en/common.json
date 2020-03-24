@@ -1,8 +1,16 @@
 {
     "lang": "ID",
-    "title": "Online Registration / RSVP Online",
+    "title": "Registration Example",
+    "welcome": "Welcome",
     "qrScan": {
         "heading": "Scan QR code",
-        "resultMsg": "No result - from -overmind state"
-    }
+        "resultMsg": "Please scan"
+    },
+    "error-with-status": "A {{statusCode}} error occurred on server",
+    "error-without-status": "An error occurred on the server",
+    "successMsgTitle": "Thank you",
+    "failedMsgTitle": "Error",
+    "successMsg": "You have successfully submitted the form",
+    "failedMsg": "Sorry, error in submitting form, please try later",
+    "savingForm": "Pleast wait..."
 }

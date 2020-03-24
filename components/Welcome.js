@@ -1,12 +1,17 @@
 import * as React from 'react';
+import { withTranslation } from '../i18n';
 
-import './welcome.scss';
+import './common.scss';
+import { useTranslation } from 'react-i18next';
 
-export default function Welcome(props) {
+function Welcome(props) {
+    const {t} = useTranslation();
 
     return (
         <div className="text-center comp-welcome">
-            <h1>Welcome to XL Axiata</h1>
+           {t('common:welcome') ? (<h1>{t('common:welcome')}</h1>) : null}
         </div>
     )
 }
+
+export default withTranslation(['common'])(Welcome);

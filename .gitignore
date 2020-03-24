@@ -8,7 +8,9 @@ node_modules
 
 .vscode/
 
-.next
+.next/
+
+.next 16.20.44/
 
 out
 build

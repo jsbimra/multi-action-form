@@ -21,7 +21,7 @@
     align-items: center;
     background-position: center center;
     background-size: cover;
-    height: 368px
+    // height: 368px
 }
 
 .footer-atas .ftitle {
@@ -163,4 +163,25 @@ section#bawah .copy {
     color: #194396;
     font-weight: 700;
     font-size: 12px
+}
+
+@media (max-width: 768px) and (min-width: 320px) {
+    .footer-atas {
+        // height: 462px;
+        padding: 25px 0;
+
+        & .borderSamping{
+            border-left: none;
+            border-right: none;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        & .paddingright80,
+        & .paddingleft80 {
+            padding-right: 0;
+            padding-left: 0;
+            padding: 0 20px;
+        }
+    }
 }

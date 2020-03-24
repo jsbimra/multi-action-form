@@ -46,23 +46,23 @@ function QRScanner(props) {
     const previewStyle = {
         height: 220,
         width: 320,
-        margin: "0 auto"
+        margin: "10px auto 30px"
     }
     // console.log(i18n.store.data);
 
     return (
         <div className="text-center">
-            <h3>{t('common:qrScan.heading')}</h3>
+            {t('common:qrScan.heading') ? (<h3>{t('common:qrScan.heading')}</h3>) : null}
             {QrReader !== undefined ? (<QrReader
                 delay={delay}
                 style={previewStyle}
                 onError={handleError}
                 onScan={handleScan}
-                facingMode="user"
+                facingMode="rear"
 
-            ></QrReader>) : (<div className="text-danger">No QrReader element set</div>)}
+            ></QrReader>) : (<div className="text-info" style={previewStyle}>Loading...</div>)}
 
-           {state.qrScan.result !== null ? (<p>{state.qrScan.result}</p>) : <p>{t('common:qrScan.resultMsg')}</p>}
+           {state.qrScan.result !== null ? (<p>{state.qrScan.result}</p>) : t('common:qrScan.resultMsg') ? (<p>{t('common:qrScan.resultMsg')}</p>) : null }
             
 
             {/* <Link href="/">

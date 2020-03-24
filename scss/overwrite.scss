@@ -4,7 +4,8 @@
 /*--------------------------------------------------*/
 
 .form-control, input[type=text], input[type=email], input[type=number], select, textarea{
-    padding: 1rem 1.8rem .5rem 1rem;
+	// padding: 1rem 1.8rem .5rem 1rem;
+	padding: 8px 10px 2px;
     margin: 0;
 	transition: all .2s ease-in-out;
     

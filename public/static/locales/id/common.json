@@ -1,9 +1,16 @@
 {
     "lang": "EN",
-    "title": "Pendaftaran Online / RSVP Online",
-    "headingQRScan": "Pindai kode QR",
+    "title": "Registration Example",
+    "welcome": "Welcome",
     "qrScan": {
         "heading": "Pindai kode QR",
-        "resultMsg": "Tidak ada hasil"
-    }
+        "resultMsg": "Please scan"
+    },
+    "error-with-status": "A {{statusCode}} error occurred on server",
+    "error-without-status": "An error occurred on the server",
+    "successMsgTitle": "Terima kasih",
+    "failedMsgTitle": "Kesalahan",
+    "successMsg": "Anda telah berhasil mengirimkan formulir",
+    "failedMsg": "Maaf, kesalahan dalam mengirimkan formulir, silakan coba lagi nanti",
+    "savingForm": "Pleast wait..."
 }

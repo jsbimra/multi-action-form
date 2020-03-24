@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { animateScroll as scroll } from 'react-scroll';
+
 import { useForm, ErrorMessage } from 'react-hook-form';
 import { useOvermind } from '../../../overmind';
 
-import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS, RSVP_STAKE_HOLDER_TYPE } from '../../../util/constants';
-import { reCaptchaInitialize, verifyCaptcha, onLoadCaptchaExplicitHandler, reRenderCaptcha } from '../../../util/index';
+import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS, RSVP_STAKE_HOLDER_TYPE, LS_KEY } from '../../../util/constants';
+import { saveDataToLocalStorage, getLocalStorageData, reCaptchaInitialize, verifyCaptcha, onLoadCaptchaExplicitHandler, reRenderCaptcha, scrollOptions, resetCaptcha } from '../../../util/index';
 import { withTranslation } from 'react-i18next';
 import { objectToFormData } from 'object-to-formdata';
 
@@ -13,7 +15,7 @@ import Message from '../../Message';
 function RSVPEntity({ props }) {
 
     const { state, actions } = useOvermind();
-    const { register, errors, handleSubmit, watch, getValues, setValue } = useForm({
+    const { register, errors, handleSubmit, watch, getValues, setValue, reset, formState } = useForm({
         mode: 'onChange',
         validateCriteriaMode: "all"
     });
@@ -61,30 +63,51 @@ function RSVPEntity({ props }) {
 
     const isSIDAndKTPOrPPValid = (watchNoSID && watchNoSID.length > KTP_SID_SEARCH_HIT_MIN_CHARS) && (watchPassportOrKTP && watchPassportOrKTP.length > KTP_SID_SEARCH_HIT_MIN_CHARS) || false;
 
-    const onSubmit = (data, e) => {
-        console.log("Form submitted ", data, e);
+    const onSubmit = async (data, e) => {
+        // console.log("Form submitted ", data, e);
         if (data && verifyPostData) {
             const newData = { ...data, ...verifyPostData };
-            console.log("newData data formed", newData);
+            newData['type'] = 'entity';
+
+            // console.log("newData data formed", newData);
+
+            //to save form data as type to localStorage
+            //Store the copy of form data to localStorage, to show user to prefill if captcha validation fails
+            saveDataToLocalStorage({ key: LS_KEY.RSVP_FORM_DATA, data: newData });
+
+            //Create Formdata from object
             const formData = objectToFormData(newData);
+            formData.append("uploadID", newData.uploadID[0], newData.uploadID[0].name);
+            formData.append("uploadBasicCalculation", newData.uploadBasicCalculation[0], newData.uploadBasicCalculation[0].name);
+            formData.append("uploadProxy", newData.uploadProxy[0], newData.uploadProxy[0].name);
+
             //To log formData purpose only, as offically formData doesn't log in browser constole
             // console.log("Form data formed", formData);
             // for (var key of formData.entries()) {
             //     console.log(key[0] + ', ' + key[1])
             // }
 
-            actions.rsvp.handleSubmitFormRequest(formData);
-        }
-    };
+            // console.log('watchHidCaptcha', watchHidCaptcha);
+            //First verify catpcha and then post the form:
+            // actions.rsvp.verifyCaptchaRequest(newData.hidGRecaptchaElement);
+            actions.rsvp.handleSubmitFormRequest(formData).then(resp => {
+                // console.log('form submitted response: ', resp)
+                
+                if (resp && resp.success) {
+                    actions.rsvp.updateSubmitSuccess(true);
+                    scroll.scrollToTop(scrollOptions);
 
-    const handleOptionChange = (e) => {
-        // console.log('handle options change triggered ', e.target.value)
-        actions.rsvp.updateKTPOrPassportState(e.target.value);
+                    resetForm();
+                }
 
-        console.log('isSIDAndKTPOrPPValid ', watchNoSID, watchPassportOrKTP, isSIDAndKTPOrPPValid);
+                if (resp && resp.errors) {
+                    actions.rsvp.handleAPIResponeError(resp);
+                }
 
-        if (isSIDAndKTPOrPPValid) {
-            triggerSIDKTPCheck();
+            })
+            // .catch(error => {
+            //     console.error("Error: occured ", error.response);
+            // });
         }
     }
 
@@ -95,16 +118,14 @@ function RSVPEntity({ props }) {
         const queryData = {
             stakeholderType: RSVP_STAKE_HOLDER_TYPE.entity, //default to one because we are loading personal component form for entity and proxy set 2 and 3 respectiviely
             numberSID: formValues && formValues.numberSID,
-            identityType: formValues && formValues.optionKTPPassport,
-            identityNumber: formValues && formValues.numberKTP || formValues && formValues.numberPassport,
+            identityType: formValues && formValues.identityType,
+            identityNumber: formValues && formValues.identityNumber,
             // proxyIdentityNumber: "" // file for proxyholer form only
         }
         setVerifyPostData(queryData);
 
         if (queryData) {
-            console.log('verifyPostData found', queryData);
-
-            actions.triggerFetching(true);
+            // console.log('verifyPostData found', queryData);
 
             actions.rsvp.verifyValidSIDKTPUser(JSON.stringify(queryData)).then(resp => {
                 // console.log("verify response ", resp);
@@ -113,22 +134,19 @@ function RSVPEntity({ props }) {
                 if (data) {
                     const address = data.address1 && data.address2 ? data.address1 + ', ' + data.address2 : (data.address1 ? data.address1 : null);
                     data['address'] = address;
-                    
-                    console.log("REFORM - DATA ", data);
 
+                    // console.log("REFORM - DATA ", data);
                     setValuesAndReadonly(data);
                 }
 
                 if (resp && resp.errors) {
                     actions.rsvp.handleAPIResponeError(resp)
                 }
-                
-                actions.triggerFetching(false);
 
             });
         }
     }
-    
+
     const handleSIdKTPVerify = (e) => {
         // console.log('handle handleSIdKTPVerify key up triggered ')
         // const curVal = e.target.value;
@@ -140,7 +158,7 @@ function RSVPEntity({ props }) {
     }
 
     const setValuesAndReadonly = values => {
-        console.log("setValuesAndReadonly response ", values);
+        // console.log("setValuesAndReadonly response ", values);
         setTimeout(() => {
             if (values.name) {
                 setValue(name.name, values.name);
@@ -148,30 +166,62 @@ function RSVPEntity({ props }) {
             }
 
             if (values.address) {
-                console.log('resp.address', address.name, values.address);
                 setValue(address.name, values.address);
                 if (addressRef.current) addressRef.current.setAttribute('readOnly', true);
             }
         }, 0);
     }
 
+    //reset form
+    const resetForm = () => {
+        reset();
+        resetCaptcha('hidGRecaptchaElement');
+    }
+
+    //handling file change to show filenames
+    const handleOptionChange = (e) => {
+        // console.log('handle options change triggered ', e.target.value)
+        actions.rsvp.updateKTPOrPassportState(e.target.value);
+
+        console.log('isSIDAndKTPOrPPValid ', watchNoSID, watchPassportOrKTP, isSIDAndKTPOrPPValid);
+
+        if (isSIDAndKTPOrPPValid) {
+            triggerSIDKTPCheck();
+        }
+    }
+
+    //handling file change to show filenames
+    const handleFileInputChange = (fieldName, file) => {
+        if (fieldName && file && file.length) {
+            actions.rsvp.updateFileListValue({ fieldName, file })
+        }
+    }
+
+    //to refill the form with the values
+    const handleReFillForm = () => {
+        // console.log('call updateFileListValue methjod');
+
+        const lsd = getLocalStorageData(LS_KEY.RSVP_FORM_DATA);
+        if (lsd && lsd.type) {
+            // actions.rsvp.updateFormState({ type: lsd.type, data: lsd })
+            for (const k of Object.keys(lsd)) {
+                console.log(k);
+                if (typeof lsd[k] === "object") {
+                    methods.setValue(k, [])
+                } else {
+                    methods.setValue(k, lsd[k])
+                }
+            }
+        }
+    }
+
     // Similar to componentDidMount and componentDidUpdate:
-    // useEffect(() => {
-    //     // if(!window.grecaptcha) reCaptchaInitialize('v2');
-    //     // console.log('watchHidCaptcha', watchHidCaptcha);
-    // }, [watchHidCaptcha]);
-
     useEffect(() => {
-        console.log("Entity: ffect fired when: isSIDKTPVerified value changed");
-
+        // console.log("Entity: ffect fired when: isSIDKTPVerified value changed");
         if (state.rsvp.isSIDKTPVerified) {
             const st = setTimeout(() => {
-                if (captcha.hiddenField.name) {
-                    verifyCaptcha(captcha.hiddenField.name);
-                }
-                else {
-                    console.error('Set data in locale for form captcha (captcha.hiddenField.name)');
-                }
+                //Trigger verifyCaptcha observer 
+                verifyCaptcha(captcha.hiddenField.name);
 
                 if (!window.grecaptcha) reCaptchaInitialize('v2');
                 if (window.grecaptcha) reRenderCaptcha();
@@ -184,7 +234,7 @@ function RSVPEntity({ props }) {
 
     }, [state.rsvp.isSIDKTPVerified]);
 
-    return (
+    const form = (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <h2>{title}</h2>
 
@@ -212,7 +262,7 @@ function RSVPEntity({ props }) {
                 </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group pt-3">
                 <div className="form-check form-check-inline">
                     <input className="form-check-input"
                         type="radio"
@@ -399,7 +449,7 @@ function RSVPEntity({ props }) {
                         <div className="form-group">
                             <div className="file-box">
                                 <label htmlFor={uploadID.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadID.label}</a>
-                                    {uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
+                                    {state.rsvp.filesList && state.rsvp.filesList[uploadID.name] ? state.rsvp.filesList[uploadID.name] : uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
                                     <input id={uploadID.name}
                                         name={uploadID.name}
                                         ref={register({
@@ -408,6 +458,7 @@ function RSVPEntity({ props }) {
                                         type="file"
                                         className="input-file"
                                         multiple
+                                        onChange={(e) => { handleFileInputChange('uploadID', e.target.files) }}
                                     />
                                 </label>
                             </div>
@@ -421,7 +472,7 @@ function RSVPEntity({ props }) {
                         <div className="form-group">
                             <div className="file-box">
                                 <label htmlFor={uploadArticleOfAssociation.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadArticleOfAssociation.label}</a>
-                                    {uploadArticleOfAssociation.placeholder} {uploadArticleOfAssociation.required ? (<span className="required">*</span>) : ''}
+                                    {state.rsvp.filesList && state.rsvp.filesList[uploadArticleOfAssociation.name] ? state.rsvp.filesList[uploadArticleOfAssociation.name] : uploadArticleOfAssociation.placeholder} {uploadArticleOfAssociation.required ? (<span className="required">*</span>) : ''}
                                     <input id={uploadArticleOfAssociation.name}
                                         name={uploadArticleOfAssociation.name}
                                         ref={register({
@@ -430,6 +481,7 @@ function RSVPEntity({ props }) {
                                         type="file"
                                         className="input-file"
                                         multiple
+                                        onChange={(e) => { handleFileInputChange('uploadBasicCalculation', e.target.files) }}
                                     />
                                 </label>
                             </div>
@@ -443,7 +495,7 @@ function RSVPEntity({ props }) {
                         <div className="form-group">
                             <div className="file-box">
                                 <label htmlFor={uploadProxy.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadProxy.label}</a>
-                                    {uploadProxy.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
+                                    {state.rsvp.filesList && state.rsvp.filesList[uploadProxy.name] ? state.rsvp.filesList[uploadProxy.name] : uploadProxy.placeholder}  {uploadID.required ? (<span className="required">*</span>) : ''}
                                     <input id={uploadProxy.name}
                                         name={uploadProxy.name}
                                         ref={register({
@@ -452,6 +504,7 @@ function RSVPEntity({ props }) {
                                         type="file"
                                         className="input-file"
                                         multiple
+                                        onChange={(e) => { handleFileInputChange('uploadProxy', e.target.files) }}
                                     />
                                 </label>
                             </div>
@@ -462,7 +515,7 @@ function RSVPEntity({ props }) {
                             <ErrorMessage as="p" errors={errors} name={uploadProxy.name} />
                         </div>
 
-                        <div className="clearfix">
+                        <div className="form-group">
                             <div className="form-check form-check-inline">
                                 <input
                                     name={userAcceptance.name}
@@ -475,13 +528,16 @@ function RSVPEntity({ props }) {
                                     className="form-check-label" />
                                 <label
                                     htmlFor={userAcceptance.name}
-                                    className="col-form-label pl-1"> {userAcceptance.label}</label>
+                                    className="col-form-label"> {userAcceptance.label}</label>
                             </div>
                             <ErrorMessage as="p" errors={errors} name={userAcceptance.name} />
                         </div>
+
                         <div className="form-group">
                             <div className="g-recaptcha" id={captcha.id}></div>
-                            <input type="hidden" name={captcha.hiddenField.name} defaultValue={state.rsvp.captchaValue}
+                            <input type="hidden" 
+                                id={captcha.hiddenField.name} 
+                                name={captcha.hiddenField.name}
                                 ref={register({
                                     required: captcha.validation.required_msg
                                 })} />
@@ -494,17 +550,19 @@ function RSVPEntity({ props }) {
                                     type="submit"
                                     id={submitButton.name}
                                     name={submitButton.name}
-                                    className="button">{submitButton.label}</button>
+                                    className="button"
+                                    >{submitButton.label}</button>
                             </div>
                         </div>
                     </React.Fragment>) :
-                     state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : state.rsvp.errors && state.rsvp.errors.message ?
-                     (<Message type="error" data={state.rsvp.errors.message} />) : 
-                     (<Message type="info" data={infoText} />) }
+                    state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : !state.rsvp.errors.message ? (<Message type="info" data={infoText} />) : (<Message type="error" data={state.rsvp.errors.message} />)}
 
         </form>
     );
+
+    return form;
 }
+
 export default withTranslation(['common', 'rsvp'])(RSVPEntity);
 
 // RSVPEntity.getInitialProps = async () => ({

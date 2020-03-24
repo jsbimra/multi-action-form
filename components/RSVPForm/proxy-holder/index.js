@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { animateScroll as scroll } from 'react-scroll';
 
 import { useForm, ErrorMessage, FormContext } from 'react-hook-form';
 import { useOvermind } from '../../../overmind';
 
-import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS } from '../../../util/constants';
-import { reCaptchaInitialize, verifyCaptcha, reRenderCaptcha } from '../../../util/index';
+import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS, LS_KEY } from '../../../util/constants';
+import { reCaptchaInitialize, verifyCaptcha, reRenderCaptcha, saveDataToLocalStorage, getLocalStorageData, resetCaptcha, scrollOptions } from '../../../util/index';
 import RSVPProxyHolderSubFields from './sub-fields';
 import { withTranslation } from 'react-i18next';
 import { objectToFormData } from 'object-to-formdata';
@@ -51,72 +52,101 @@ function RSVPProxyHolder({ props }) {
     const watchHidCaptcha = methods.watch("hidGRecaptchaElement");
 
     const onSubmit = (data, e) => {
-        console.log("Form submitted ", data, e, verifyPostData);
+        // console.log("Form submitted ", data, verifyPostData);
         if (data && verifyPostData) {
             const newData = { ...data, ...verifyPostData };
-            console.log("newData data formed", newData);
+            newData['type'] = 'proxyholder';
+
+            // console.log("newData data formed", newData);
+
+            //to save form data as type to localStorage
+            //Store the copy of form data to localStorage, to show user to prefill if captcha validation fails
+            saveDataToLocalStorage({ key: LS_KEY.RSVP_FORM_DATA, data: newData });
+
+            //Create Formdata from object
             const formData = objectToFormData(newData);
+            //All files of the form 
+            formData.append("proxyUploadID", newData.uploadID[0], newData.proxyUploadID[0].name);
+            formData.append("proxyUploadBasicCalculation", newData.proxyUploadBasicCalculation[0], newData.proxyUploadBasicCalculation[0].name);
+            formData.append("proxyUploadProxy", newData.proxyUploadProxy[0], newData.proxyUploadProxy[0].name);
+
+            formData.append("uploadID", newData.uploadID[0], newData.uploadID[0].name);
+            formData.append("uploadBasicCalculation", newData.uploadBasicCalculation[0], newData.uploadBasicCalculation[0].name);
+
             //To log formData purpose only, as offically formData doesn't log in browser constole
             // console.log("Form data formed", formData);
             // for (var key of formData.entries()) {
             //     console.log(key[0] + ', ' + key[1])
             // }
 
-            actions.rsvp.handleSubmitFormRequest(formData);
+            // console.log('watchHidCaptcha', watchHidCaptcha);
+            //First verify catpcha and then post the form:
+            // actions.rsvp.verifyCaptchaRequest(newData.hidGRecaptchaElement);
+            actions.rsvp.handleSubmitFormRequest(formData).then(resp => {
+                // console.log('form submitted response: ', resp)
+
+                if (resp && resp.success) {
+                    actions.rsvp.updateSubmitSuccess(true);
+                    scroll.scrollToTop(scrollOptions);
+
+                    //form reset & captcha
+                    resetForm();
+                }
+                if (resp && resp.errors) {
+                    console.log("Error submitting form ", resp, resp.errors);
+                    actions.rsvp.handleAPIResponeError(resp);
+                }
+
+            })
+        //     .catch(function (error) {
+        //         console.log("Error: occured ", error.response);
+        //    });
+
         }
-    };
+    }
 
-    // const handleOptionChange = (e) => {
-    //     // console.log('handle options change triggered ', nameKTPOrPassport)
-    //     actions.rsvp.updateKTPOrPassportState({ stateName: 'ktpOrPassport', value: e.target.value });
-    // }
+    //reset form
+    const resetForm = () => {
+        methods.reset();
+        resetCaptcha('hidGRecaptchaElement');
+    }
 
+    //state update
     const handleOnVerifyPostData = data => {
-
         if (data) setVerifyPostData(data);
     }
-    let renderCaptchaOnce = 0;
+
+    //handling file change to show filenames
+    const handleFileInputChange = (fieldName, file) => {
+        if (fieldName && file && file.length) {
+            actions.rsvp.updateFileListValue({ fieldName, file })
+        }
+    }
+
+    //to refill the form with the values
+    const handleReFillForm = () => {
+        console.log('call updateFileListValue methjod');
+
+        const lsd = getLocalStorageData(LS_KEY.RSVP_FORM_DATA);
+        if (lsd && lsd.type) {
+            // actions.rsvp.updateFormState({ type: lsd.type, data: lsd })
+            for (const k of Object.keys(lsd)) {
+                console.log(k);
+                if (typeof lsd[k] === "object") {
+                    methods.setValue(k, [])
+                } else {
+                    methods.setValue(k, lsd[k])
+                }
+            }
+        }
+    }
 
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
-        // if(!window.grecaptcha) reCaptchaInitialize('v2');
-        // console.log('watchHidCaptcha', watchHidCaptcha);
-    }, [watchHidCaptcha]);
+        // handleReFillForm();
+    });
 
-    //for state.rsvp.isSIDKTPVerified
-    // useEffect(() => {
-    //     // console.log("ProxyHolder: effect fired when: isSIDKTPVerified value changed");
-
-    //     //Use this when you are using isSIDKTPVerified
-    //     // if (state.rsvp.isSIDKTPVerified) {
-    //     const st = setTimeout(() => {
-    //         if (captcha.hiddenField.name) {
-    //             verifyCaptcha(captcha.hiddenField.name);
-    //         }
-    //         else {
-    //             console.error('Set data in locale for form captcha (captcha.hiddenField.name)');
-    //         }
-    //         console.log('before inc', renderCaptchaOnce)
-
-    //         if (renderCaptchaOnce === 0) {
-    //             renderCaptchaOnce++;
-    //             console.log('after inc', renderCaptchaOnce)
-    //             if (!window.grecaptcha) reCaptchaInitialize('v2');
-    //             if (window.grecaptcha) reRenderCaptcha();
-    //             renderCaptchaOnce++;
-    //         }
-    //     }, 0);
-
-    //     return () => {
-    //         clearTimeout(st);
-    //     }
-    //     // }
-
-    // });
-    // }, [state.rsvp.isSIDKTPVerified]);
-
-
-    return (
+    const form = (
         <FormContext {...methods}>
             <form className="form" onSubmit={methods.handleSubmit(onSubmit)}>
                 <h2>{title}</h2>
@@ -262,17 +292,21 @@ function RSVPProxyHolder({ props }) {
                     </div>
 
                     <div className="form-group">
+                        {/* {JSON.stringify(filesList, null, 2)}; */}
+
                         <div className="file-box">
                             <label htmlFor={uploadID.name} className="input-file-label">
                                 <a className="button button--2 button--axiata">{uploadID.label}</a>
-                                {uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
+                                {state.rsvp.filesList && state.rsvp.filesList[uploadID.name] ? state.rsvp.filesList[uploadID.name] : uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
                                 <input id={uploadID.name}
                                     name={uploadID.name}
                                     ref={methods.register({
                                         required: uploadID.validation.required_msg
                                     })}
                                     type="file"
-                                    className="input-file" />
+                                    className="input-file"
+                                    onChange={(e) => { handleFileInputChange('proxyUploadID', e.target.files) }}
+                                />
                                 {/* {} */}
                             </label>
                         </div>
@@ -286,14 +320,16 @@ function RSVPProxyHolder({ props }) {
                     <div className="form-group">
                         <div className="file-box">
                             <label htmlFor={uploadArticleOfAssociation.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadArticleOfAssociation.label}</a>
-                                {uploadArticleOfAssociation.placeholder} {uploadArticleOfAssociation.required ? (<span className="required">*</span>) : ''}
+                                {state.rsvp.filesList && state.rsvp.filesList[uploadArticleOfAssociation.name] ? state.rsvp.filesList[uploadArticleOfAssociation.name] : uploadArticleOfAssociation.placeholder} {uploadArticleOfAssociation.required ? (<span className="required">*</span>) : ''}
                                 <input id={uploadArticleOfAssociation.name}
                                     name={uploadArticleOfAssociation.name}
                                     ref={methods.register({
                                         required: uploadArticleOfAssociation.validation.required_msg
                                     })}
                                     type="file"
-                                    className="input-file" />
+                                    className="input-file"
+                                    onChange={(e) => { handleFileInputChange('proxyUploadBasicCalculation', e.target.files) }}
+                                />
                             </label>
                         </div>
                         {uploadArticleOfAssociation.fileInfoLine1 || uploadArticleOfAssociation.fileInfoLine2 ? (<div className="file-info">
@@ -306,14 +342,16 @@ function RSVPProxyHolder({ props }) {
                     <div className="form-group">
                         <div className="file-box">
                             <label htmlFor={uploadProxy.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadProxy.label}</a>
-                                {uploadProxy.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
+                                {state.rsvp.filesList && state.rsvp.filesList[uploadProxy.name] ? state.rsvp.filesList[uploadProxy.name] : uploadProxy.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
                                 <input id={uploadProxy.name}
                                     name={uploadProxy.name}
                                     ref={methods.register({
                                         required: uploadProxy.validation.required_msg
                                     })}
                                     type="file"
-                                    className="input-file" />
+                                    className="input-file"
+                                    onChange={(e) => { handleFileInputChange('proxyUploadProxy', e.target.files) }}
+                                />
                             </label>
                         </div>
                         {uploadProxy.fileInfoLine1 || uploadProxy.fileInfoLine2 ? (<div className="file-info">
@@ -324,7 +362,9 @@ function RSVPProxyHolder({ props }) {
                     </div>
 
                     {/* Sub fields defination from different component for proxyOfShareHolderIdentity - START */}
-                    <RSVPProxyHolderSubFields data={proxyOfShareHolderIdentity} onVerifyPostData={handleOnVerifyPostData} />
+                    <RSVPProxyHolderSubFields data={proxyOfShareHolderIdentity}
+                        onVerifyPostData={handleOnVerifyPostData}
+                        onHandleFileChange={handleFileInputChange} />
 
                     {state.rsvp.isSIDKTPVerified ? (<div className="form-group text-center">
                         <div className="">
@@ -332,7 +372,8 @@ function RSVPProxyHolder({ props }) {
                                 type="submit"
                                 id={submitButton.name}
                                 name={submitButton.name}
-                                className="button">{submitButton.label}</button>
+                                className="button"
+                                >{submitButton.label}</button>
                         </div>
                     </div>) : null}
 
@@ -341,6 +382,8 @@ function RSVPProxyHolder({ props }) {
 
             </form>
         </FormContext>);
+
+    return form;
 }
 
 export default withTranslation(['common', 'rsvp'])(RSVPProxyHolder);

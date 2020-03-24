@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { animateScroll as scroll } from 'react-scroll';
+
 import { useForm, ErrorMessage } from 'react-hook-form';
 import { useOvermind } from '../../../overmind';
 
-import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS, RSVP_STAKE_HOLDER_TYPE } from '../../../util/constants';
-import { reCaptchaInitialize, verifyCaptcha, onLoadCaptchaExplicitHandler, reRenderCaptcha } from '../../../util/index';
+import { phonePattern1, emailPattern, KTP_SID_SEARCH_HIT_MIN_CHARS, RSVP_STAKE_HOLDER_TYPE, LS_KEY } from '../../../util/constants';
+import { saveDataToLocalStorage, getLocalStorageData, reCaptchaInitialize, verifyCaptcha, onLoadCaptchaExplicitHandler, reRenderCaptcha, scrollOptions, resetCaptcha } from '../../../util/index';
 import { withTranslation } from 'react-i18next';
 import { objectToFormData } from 'object-to-formdata';
 import Message from '../../Message';
-import { action } from 'overmind';
+
 
 function RSVPPersonal({ props }) {
 
     const { state, actions } = useOvermind();
-    const { register, errors, handleSubmit, watch, getValues, setValue } = useForm({
+    const { register, errors, handleSubmit, watch, getValues, setValue, reset, formState } = useForm({
         mode: 'onChange',
         validateCriteriaMode: "all"
     });
@@ -59,31 +61,50 @@ function RSVPPersonal({ props }) {
     const isSIDAndKTPOrPPValid = (watchNoSID && watchNoSID.length > KTP_SID_SEARCH_HIT_MIN_CHARS) && (watchPassportOrKTP && watchPassportOrKTP.length > KTP_SID_SEARCH_HIT_MIN_CHARS) || false;
 
     const onSubmit = (data, e) => {
-        console.log("Form submitted ", data, e);
-        if (data && verifyPostData) {
+        // console.log("Form submitted ", data, e);
+
+        // verifyCaptcha
+        if (data && verifyPostData && verifyCaptcha(captcha.hiddenField.name)) {
             const newData = { ...data, ...verifyPostData };
-            console.log("newData data formed", newData);
+            newData['type'] = 'personal';
+
+            // console.log("newData data formed", newData);
+
+            //to save form data as type to localStorage
+            //Store the copy of form data to localStorage, to show user to prefill if captcha validation fails
+            saveDataToLocalStorage({ key: LS_KEY.RSVP_FORM_DATA, data: newData });
+
+            //Create Formdata from object
             const formData = objectToFormData(newData);
+            formData.append("uploadID", newData.uploadID[0], newData.uploadID[0].name);
+
             //To log formData purpose only, as offically formData doesn't log in browser constole
             // console.log("Form data formed", formData);
             // for (var key of formData.entries()) {
             //     console.log(key[0] + ', ' + key[1])
             // }
 
-            actions.rsvp.handleSubmitFormRequest(formData);
+            // console.log('watchHidCaptcha', watchHidCaptcha);
+            //First verify catpcha and then post the form:
+            // actions.rsvp.verifyCaptchaRequest(newData.hidGRecaptchaElement);
+            actions.rsvp.handleSubmitFormRequest(formData).then(resp => {
+                // console.log('form submitted response: ', resp)
+                if (resp && resp.success) {
+                    actions.rsvp.updateSubmitSuccess(true);
+                    scroll.scrollToTop(scrollOptions);
+
+                    resetForm();
+                }
+                if (resp && resp.errors) {
+                    actions.rsvp.handleAPIResponeError(resp);
+                }
+
+            })
+                .catch(error => {
+                    console.error("Error: occured ", error, error.response);
+                });
         }
     };
-
-    const handleOptionChange = (e) => {
-        // console.log('handle options change triggered ', e.target.value)
-        actions.rsvp.updateKTPOrPassportState(e.target.value);
-
-        console.log('isSIDAndKTPOrPPValid ', watchNoSID, watchPassportOrKTP, isSIDAndKTPOrPPValid);
-
-        if (isSIDAndKTPOrPPValid) {
-            triggerSIDKTPCheck();
-        }
-    }
 
     const triggerSIDKTPCheck = () => {
         const formValues = getValues()
@@ -92,8 +113,8 @@ function RSVPPersonal({ props }) {
         const queryData = {
             stakeholderType: RSVP_STAKE_HOLDER_TYPE.personal, //default to one because we are loading personal component form for entity and proxy set 2 and 3 respectiviely
             numberSID: formValues && formValues.numberSID,
-            identityType: formValues && formValues.optionKTPPassport,
-            identityNumber: formValues && formValues.identityNumber || formValues && formValues.identityNumber,
+            identityType: formValues && formValues.identityType,
+            identityNumber: formValues && formValues.identityNumber,
             // proxyIdentityNumber: "" // file for proxyholer form only
         }
 
@@ -109,16 +130,14 @@ function RSVPPersonal({ props }) {
                 if (data) {
                     const address = data.address1 && data.address2 ? data.address1 + ', ' + data.address2 : (data.address1 ? data.address1 : null);
                     data['address'] = address;
-                    
-                    console.log("REFORM - DATA ", data);
 
+                    // console.log("REFORM - DATA ", data);
                     setValuesAndReadonly(data);
                 }
 
                 if (resp && resp.errors) {
                     actions.rsvp.handleAPIResponeError(resp)
                 }
-                
             });
         }
     }
@@ -134,7 +153,7 @@ function RSVPPersonal({ props }) {
     }
 
     const setValuesAndReadonly = values => {
-        console.log("setValuesAndReadonly response ", values);
+        // console.log("setValuesAndReadonly response ", values);
         setTimeout(() => {
             if (values.name) {
                 setValue(name.name, values.name);
@@ -148,22 +167,54 @@ function RSVPPersonal({ props }) {
         }, 0);
     }
 
-    // Similar to componentDidMount and componentDidUpdate:
-    // useEffect(() => {
-    //     // console.log(state.rsvp.personal)
-    //     // if(!window.grecaptcha) reCaptchaInitialize('v2');
-    //     // console.log('watchHidCaptcha', watchHidCaptcha);
-    // }, [watchHidCaptcha]);
+    //reset form
+    const resetForm = () => {
+        reset();
+        resetCaptcha('hidGRecaptchaElement');
+    }
 
+    //handling file change to show filenames
+    const handleOptionChange = (e) => {
+        // console.log('handle options change triggered ', e.target.value)
+        actions.rsvp.updateKTPOrPassportState(e.target.value);
+        // console.log('isSIDAndKTPOrPPValid ', watchNoSID, watchPassportOrKTP, isSIDAndKTPOrPPValid);
+        if (isSIDAndKTPOrPPValid) {
+            triggerSIDKTPCheck();
+        }
+    }
+
+    //handling file change to show filenames
+    const handleFileInputChange = (fieldName, file) => {
+        if (fieldName && file && file.length) {
+            actions.rsvp.updateFileListValue({ fieldName, file })
+        }
+    }
+
+    //to refill the form with the values
+    const handleReFillForm = () => {
+        console.log('call updateFileListValue methjod');
+
+        const lsd = getLocalStorageData(LS_KEY.RSVP_FORM_DATA);
+        if (lsd && lsd.type) {
+            // actions.rsvp.updateFormState({ type: lsd.type, data: lsd })
+            for (const k of Object.keys(lsd)) {
+                console.log(k);
+                if (typeof lsd[k] === "object") {
+                    methods.setValue(k, [])
+                } else {
+                    methods.setValue(k, lsd[k])
+                }
+            }
+        }
+    }
+
+    // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
-        console.log("Personal: effect fired when: isSIDKTPVerified value changed");
+        // console.log("Personal: effect fired when: isSIDKTPVerified value changed");
         if (state.rsvp.isSIDKTPVerified) {
             const st = setTimeout(() => {
-                // verifyCaptcha
-                if (captcha.hiddenField.name)
-                    verifyCaptcha(captcha.hiddenField.name);
-                else
-                    console.error('Set data in locale for form captcha (captcha.hiddenField.name)');
+                //Trigger verifyCaptcha observer 
+                verifyCaptcha(captcha.hiddenField.name);
 
                 if (!window.grecaptcha) reCaptchaInitialize('v2');
                 if (window.grecaptcha) reRenderCaptcha();
@@ -175,7 +226,15 @@ function RSVPPersonal({ props }) {
         }
     }, [state.rsvp.isSIDKTPVerified]);
 
-    return (
+    //for cleanup
+    // Specify how to clean up after this effect:
+    useEffect(() => {
+        // return function cleanup() {
+        //     console.log('CLEAN UP CODE FIRED!!! PERSONAL');
+        // };
+    });
+
+    const form = (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <h2>{title}</h2>
 
@@ -203,7 +262,7 @@ function RSVPPersonal({ props }) {
                 </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group pt-3">
                 <div className="form-check form-check-inline">
                     <input className="form-check-input"
                         type="radio"
@@ -397,7 +456,8 @@ function RSVPPersonal({ props }) {
                         </div> */}
                             <div className="file-box">
                                 <label htmlFor={uploadID.name} className="input-file-label"><a className="button button--2 button--axiata">{uploadID.label}</a>
-                                    {uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
+                                    {/* {JSON.stringify(uploadID, null, 2)} */}
+                                    {state.rsvp.filesList && state.rsvp.filesList[uploadID.name] ? state.rsvp.filesList[uploadID.name] : uploadID.placeholder} {uploadID.required ? (<span className="required">*</span>) : ''}
                                     <input id={uploadID.name}
                                         name={uploadID.name}
                                         ref={register({
@@ -406,6 +466,7 @@ function RSVPPersonal({ props }) {
                                         type="file"
                                         className="input-file"
                                         multiple
+                                        onChange={(e) => { handleFileInputChange('uploadID', e.target.files) }}
                                     />
                                 </label>
                             </div>
@@ -426,17 +487,21 @@ function RSVPPersonal({ props }) {
                                         required: userAcceptance.validation.required_msg
                                     })}
                                     type="checkbox"
-                                    className="form-check-label" />
+                                    className="form-check-label"
+                                />
                                 <label
                                     htmlFor={userAcceptance.name}
-                                    className="col-form-label pl-1"> {userAcceptance.label}</label>
+                                    className="col-form-label"> {userAcceptance.label}</label>
                             </div>
                             <ErrorMessage as="p" errors={errors} name={userAcceptance.name} />
                         </div>
 
                         <div className="form-group">
                             <div className="g-recaptcha" id={captcha.id}></div>
-                            <input type="hidden" name={captcha.hiddenField.name} defaultValue={state.rsvp.captchaValue}
+                            <input type="hidden"
+                                id={captcha.hiddenField.name}
+                                name={captcha.hiddenField.name}
+                                // defaultValue=""
                                 ref={register({
                                     required: captcha.validation.required_msg
                                 })} />
@@ -449,18 +514,17 @@ function RSVPPersonal({ props }) {
                                     type="submit"
                                     id={submitButton.name}
                                     name={submitButton.name}
-                                    className="button">{submitButton.label}</button>
+                                    className="button"
+                                >{submitButton.label}</button>
                             </div>
                         </div>
                     </React.Fragment>) :
-                        state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : state.rsvp.errors && state.rsvp.errors.message ?
-                        (<Message type="error" data={state.rsvp.errors.message} />) : 
-                        (<Message type="info" data={infoText} />) }
+                    state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : !state.rsvp.errors.message ? (<Message type="info" data={infoText} />) : (<Message type="error" data={state.rsvp.errors.message} />)}
 
-                    {/* {state.isFetching ? (<Message type="info" data={'Fetching information...'} />) : null} */}
-
+            {/* <pre>{JSON.stringify(formState, null, 2)}</pre> */}
         </form>
     );
+    return form;
 }
 
 export default withTranslation(['common', 'rsvp'])(RSVPPersonal);

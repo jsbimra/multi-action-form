@@ -11,10 +11,16 @@
 
         font-size: 14px;
 
+        input[type=checkbox], input[type=radio] {
+            width: 20px;
+            height: 20px;
+        }
+
         .col-form-label {
             // color: #333339;
             color: #fff;
-
+            line-height: normal;
+            padding-left: 8px;
         }
 
         .button.button--axiata {

@@ -42,7 +42,7 @@
         }
       },
       "optionsKTPOrPassport": {
-        "name": "optionKTPPassport",
+        "name": "identityType",
         "required": true,
         "option1": {
           "label": "KTP",
@@ -175,9 +175,9 @@
         "value": ""
       },
       "infoText": "Enter No KTUR & No SID/AKSes.KSEI to verify your status",
-      "successMsgTitle": "RSVP Personal Form Success",
+      "successMsgTitle": "Thank you",
       "failedMsgTitle": "Error",
-      "successMsg": "RSVP Personal Form submitted successfully",
+      "successMsg": "You have successfully submitted the form",
       "failedMsg": "RSVP Personal Form Error",
       "redirectURL": "http://localhost:4200/en/"
     }
@@ -197,7 +197,7 @@
         }
       },
       "optionsKTPOrPassport": {
-        "name": "optionKTPPassport",
+        "name": "identityType",
         "required": true,
         "option1": {
           "label": "KTP",
@@ -295,10 +295,10 @@
         }
       },
       "uploadID": {
-        "label": "Select",
+        "label": "Upload your ID",
         "name": "uploadID",
         "value": "",
-        "placeholder": "Upload your ID",
+        "placeholder": "No file chosen",
         "required": true,
         "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
         "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
@@ -307,10 +307,10 @@
         }
       },
       "uploadArticleOfAssociation": {
-        "label": "Select",
+        "label": "Upload article of association",
         "name": "uploadBasicCalculation",
         "value": "",
-        "placeholder": "Upload article of association",
+        "placeholder": "No file chosen",
         "required": true,
         "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
         "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
@@ -319,10 +319,10 @@
         }
       },
       "uploadProxy": {
-        "label": "Select",
+        "label": "Upload proxy",
         "name": "uploadProxy",
         "value": "",
-        "placeholder": "Upload proxy",
+        "placeholder": "No file chosen",
         "required": true,
         "fileInfoLine1": "Ukuran berkas harus kurang dari 10 MB. jat",
         "fileInfoLine2": "Jenis file yang diperbolehkan: .jpg , .jpeg, .png, .pdf",
@@ -375,7 +375,7 @@
         }
       },
       "optionsKTPOrPassport": {
-        "name": "optionKTPPassport",
+        "name": "identityType",
         "required": true,
         "option1": {
           "label": "KTP",
@@ -397,7 +397,7 @@
         },
         "ktp": {
           "label": "NIK (KTP)",
-          "name": "numberKTP",
+          "name": "proxyIdentityNumber",
           "value": "",
           "required": true,
           "placeholder": "Input your KTP number",
@@ -407,7 +407,7 @@
         },
         "passport": {
           "label": "Passport",
-          "name": "numberPassport",
+          "name": "proxyIdentityNumber",
           "value": "",
           "required": true,
           "placeholder": "Input your Passport number",
@@ -439,7 +439,7 @@
       "phoneNumber": {
         "label": "Phone/Mobile",
         "name": "proxyPhone",
-        "value": "0909090",
+        "value": "",
         "placeholder": "Input your phone number here",
         "hint": "",
         "required": true,
@@ -451,7 +451,7 @@
       "email": {
         "label": "Email",
         "name": "proxyEmail",
-        "value": "test@test.com",
+        "value": "",
         "placeholder": "Input your email",
         "required": true,
         "validation": {
@@ -550,7 +550,7 @@
           "numberKTUR": {
             "label": "No KTUR",
             "name": "kturNumber",
-            "value": "numberKTUR",
+            "value": "",
             "placeholder": "Input your KTUR number",
             "required": true,
             "validation": {
