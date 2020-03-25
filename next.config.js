@@ -3,7 +3,6 @@ const withStyles = require('@webdeb/next-styles')
 
 module.exports = withStyles({
   target: 'serverless', //for this check https://nextjs.org/docs/api-reference/next.config.js/build-target
-  distDir: 'build',
   exportTrailingSlash: true,
   exportPathMap: function () {
     return {
