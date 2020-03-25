@@ -1,4 +1,4 @@
-.comp-welcome, 
+.comp-welcome,
 .comp-success-view {
     display: flex;
     align-items: center;
@@ -7,12 +7,20 @@
     flex-direction: column;
 }
 
+.comp-qr-scanner{
 
-.loading-wrapper{
+    @media (min-width: 600px) {
+        width: 480px;       
+        margin: 0 auto;
+
+    }
+}
+
+.loading-wrapper {
 
     position: absolute;
     top: 0;
-    left:0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
@@ -21,18 +29,31 @@
     justify-items: center;
     z-index: 500;
 
-    .overlay{
-        background: rgba(0,0,0,.7);
+    .overlay {
+        background: rgba(0, 0, 0, .7);
         position: fixed;
-        top:0;
+        top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: 1000;
-}
+    }
 
-    .loading-content{
+    .loading-content {
         position: relative;
         z-index: 2000;
     }
+}
+
+.table {
+    color: #fff;
+    text-align: left;
+}
+
+.nols {
+    letter-spacing: 0;
+}
+
+.lsp2 {
+    letter-spacing: 2px;
 }

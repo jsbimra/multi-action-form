@@ -1,10 +1,20 @@
 {
     "lang": "ID",
-    "title": "Registration Example",
-    "welcome": "Welcome",
+    "title": "Online Registration / RSVP Online",
+    "welcome": "Welcome to XL Axiata",
+    "noDataMsg": "No data found",
     "qrScan": {
         "heading": "Scan QR code",
-        "resultMsg": "Please scan"
+        "resultTitle": "User Information",
+        "resultMsg": "Please scan",
+        "resultInfo": {
+            "numberSID": "SID",
+            "identityNumber": "Identity Number",
+            "stakeholderType": "Stakeholder Type",
+            "name": "Name",
+            "address": "Address"
+        },
+        "scanningInfo": "Fectching information, please wait..."
     },
     "error-with-status": "A {{statusCode}} error occurred on server",
     "error-without-status": "An error occurred on the server",

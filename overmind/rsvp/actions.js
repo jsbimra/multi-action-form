@@ -100,7 +100,7 @@ export const updateVerifyCaptchaStatus = ({ state, effects, actions }, payload) 
 
 }
 
-export const handleAPIResponeError = ({ state, effects, actions }, payload) => {
+export const updateAPIResponeErrorState = ({ state, effects, actions }, payload) => {
     // console.log('Hanlding API response error ', payload)
     if (payload && payload.errors) {
         state.rsvp.errors = payload.errors;
@@ -180,4 +180,79 @@ export const updateFileListValue = ({ state, effects, actions }, payload) => {
         [fieldName]: name
     };
     // console.log('updateFileListValue updated', state.rsvp.filesList)
+}
+
+//QRScan Request
+export const updateQRScanResult = async ({ state, effects, actions }, payload) => {
+    // console.log("Updating updateQRScanResult", payload);
+
+    // RESPONSE STATES
+    // 00 =  success
+    // 01 = QR Already scanned
+    // 02 = No data
+    // 03 =  Internal server error
+
+    if (payload) {
+
+        actions.triggerFetching(true);
+
+        //update state of qrScan to be scanned
+        state.rsvp.qrScan.scanned = true;
+
+        const resp = await effects.rsvp.api.qrScanRequest(payload);
+
+        //If no response due to no API network connectivity or API not working
+        if (resp) {
+            const { data, messages, statusCode } = resp.data;
+            // console.log('response data ', data);
+
+            if (data && statusCode == '00' || data && statusCode == '01') {
+
+                if (statusCode == '01') {
+                    data['message'] = messages;
+                } else {
+                    data['message'] = messages;
+                }
+
+                //update State
+                state.rsvp.qrScan.result = { ...data };
+            }
+
+            if (statusCode == '02' || statusCode == '03') {
+                const errors = { message: messages, statusCode } ;
+                console.log('errors', errors);
+                //update State
+                state.rsvp.errors = errors;
+            }
+
+            actions.triggerFetching(false);
+
+        }
+        else {
+            actions.triggerFetching(false);
+
+            const errors = { message: "Network Error: Sorry server is down try again later", statusCode: null };
+            console.log('errors', errors);
+
+            //update State
+            state.rsvp.errors = errors;
+
+            return errors;
+        }
+    }
+    else {
+        actions.triggerFetching(false);
+        console.error(new Error("Whoops no post data set"));
+    }
+}
+
+export const resetQRResultState = async ({ state }, value) => {
+    //reset state values:
+    state.rsvp.qrScan.result = null;
+}
+
+export const updateQRScannedState = async ({ state }, flag) => {
+    // console.log('BEFORE >>>>>> call to update scanned state', flag, state.rsvp.qrScan)
+    state.rsvp.qrScan.scanned = flag;
+    // console.log('AFTER >>>>> call to update scanned state', flag, state.rsvp.qrScan)
 }

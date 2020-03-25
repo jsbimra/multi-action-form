@@ -96,7 +96,7 @@ function RSVPPersonal({ props }) {
                     resetForm();
                 }
                 if (resp && resp.errors) {
-                    actions.rsvp.handleAPIResponeError(resp);
+                    actions.rsvp.updateAPIResponeErrorState(resp);
                 }
 
             })
@@ -136,7 +136,7 @@ function RSVPPersonal({ props }) {
                 }
 
                 if (resp && resp.errors) {
-                    actions.rsvp.handleAPIResponeError(resp)
+                    actions.rsvp.updateAPIResponeErrorState(resp)
                 }
             });
         }

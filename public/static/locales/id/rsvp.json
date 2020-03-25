@@ -20,11 +20,11 @@
   "identityType": [
     {
       "text": "KTP",
-      "value": 1
+      "value": ""
     },
     {
       "text": "Passport",
-      "value": 2
+      "value": ""
     }
   ],
   "personal": {

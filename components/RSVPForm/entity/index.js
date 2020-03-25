@@ -101,7 +101,7 @@ function RSVPEntity({ props }) {
                 }
 
                 if (resp && resp.errors) {
-                    actions.rsvp.handleAPIResponeError(resp);
+                    actions.rsvp.updateAPIResponeErrorState(resp);
                 }
 
             })
@@ -140,7 +140,7 @@ function RSVPEntity({ props }) {
                 }
 
                 if (resp && resp.errors) {
-                    actions.rsvp.handleAPIResponeError(resp)
+                    actions.rsvp.updateAPIResponeErrorState(resp)
                 }
 
             });

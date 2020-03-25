@@ -94,7 +94,7 @@ function RSVPProxyHolder({ props }) {
                 }
                 if (resp && resp.errors) {
                     console.log("Error submitting form ", resp, resp.errors);
-                    actions.rsvp.handleAPIResponeError(resp);
+                    actions.rsvp.updateAPIResponeErrorState(resp);
                 }
 
             })

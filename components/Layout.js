@@ -34,7 +34,7 @@ function Layout(props) {
         <div>
             <Header handleLanguageChange={changeLanguage} />
 
-            <div className="container mt-4 mb-4 pt-4 pb-4 layout-container">
+            <div className="container mt-4 mb-4 pt-4 layout-container">
                 {/* 
                     To show quote example
                     <div className="mb-5">

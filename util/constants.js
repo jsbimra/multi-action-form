@@ -17,13 +17,14 @@ export const RSVP_STAKE_HOLDER_TYPE = {
    proxyholder: 3,
 }
 
-export const API_BASE_URL = "http://153.92.5.209:3001";
-export const API_BASE_URL_2 = "http://153.92.5.209:3000";
+export const API_BASE_URL = "//153.92.5.209:3001";
+export const API_BASE_URL_2 = "//153.92.5.209:3000";
 
 export const API_SERVICES = {
    VALIDATE_SID_KTP: '/services/validate-sid-ktp',
    RSVP_REGISTRATION: '/services/submit-registration',
    CAPTCHA_VERIFICATION: '/services/captchaVerification',
+   QR_SCAN: '/services/qrCodeScan',
 };
 
 export const LS_KEY = {

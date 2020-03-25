@@ -27,6 +27,10 @@ export class Api {
         this.request = request;
     }
 
+    // getRandomQuotes = () => {
+    //     return this.request.get(`/randomQuote`)
+    // }
+
     getSIDKTPVerifiedStatus = (payload) => {
         // return this.request.post(`${API_SERVICES.VALIDATE_SID_KTP}`, payload)
         // return fetch(`${API_SERVICES.VALIDATE_SID_KTP}`, {
@@ -83,9 +87,16 @@ export class Api {
             }
         })
     }
-    // getRandomQuotes = () => {
-    //     return this.request.get(`/randomQuote`)
-    // }
+
+    qrScanRequest = payload => {
+        console.log('qrScanREquest payload received ', payload);
+        return this.request.post(`${API_BASE_URL}${API_SERVICES.QR_SCAN}`, payload, {
+            //for headers settings
+            headers: {
+                "content-type": "application/x-www-form-urlencoded"
+            }
+        })
+    }
 
 }
 

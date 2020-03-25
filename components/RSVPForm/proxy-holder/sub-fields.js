@@ -95,7 +95,7 @@ export default function RSVPProxyHolderSubFields(props) {
                 }
 
                 if (resp && resp.errors) {
-                    actions.rsvp.handleAPIResponeError(resp)
+                    actions.rsvp.updateAPIResponeErrorState(resp)
                 }
 
                 actions.triggerFetching(false);

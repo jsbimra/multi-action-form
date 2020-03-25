@@ -20,21 +20,24 @@ const overmind = createOvermind(config, {
     devtools: false //'localhost:3000'
 });
 
-function Index() {
+function Index({ t }) {
     return (
-        <Provider value={overmind}>
-            <LandingPage />
-        </Provider>
+        <React.Fragment>
+            <Provider value={overmind}>
+                <LandingPage />
+            </Provider>
+        </React.Fragment>
     )
 }
 
-export default Index;
-// export default withTranslation(['common','rsvp'])(Index);
+Index.getInitialProps = async () => ({
+    namespacesRequired: ['common', 'rsvp'],
+})
 
-// Index.getInitialProps = async () => ({
-//     namespacesRequired: ['common', 'rsvp'],
-// })
+Index.propTypes = {
+    t: PropTypes.func.isRequired,
+}
 
-// Index.propTypes = {
-//     t: PropTypes.func.isRequired,
-// }
+// export default Index;
+
+export default withTranslation('common')(Index);

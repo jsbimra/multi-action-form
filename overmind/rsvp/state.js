@@ -33,5 +33,10 @@ export const state = {
     proxyUploadID: "",
     proxyUploadBasicCalculation: "",
     proxyUploadProxy: "",
-  }
+  },
+  qrScan: {
+    scanning: false,
+    scanned: false,
+    result: null
+  },
 }

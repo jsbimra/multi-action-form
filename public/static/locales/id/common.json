@@ -1,10 +1,20 @@
 {
     "lang": "EN",
-    "title": "Registration Example",
-    "welcome": "Welcome",
+    "title": "Pendaftaran Online / RSVP Online",
+    "welcome": "Selamat datang di XL Axiata",
+    "noDataMsg": "Tidak ada data ditemukan",
     "qrScan": {
         "heading": "Pindai kode QR",
-        "resultMsg": "Please scan"
+        "resultTitle": "Informasi pengguna",
+        "resultMsg": "Please scan",
+        "resultInfo": {
+            "numberSID": "SID",
+            "identityNumber": "Nomor identitas",
+            "stakeholderType": "Jenis Stakeholder",
+            "name": "Nama",
+            "address": "Alamat"
+        },
+        "scanningInfo": "Mengambil informasi, harap tunggu ..."
     },
     "error-with-status": "A {{statusCode}} error occurred on server",
     "error-without-status": "An error occurred on the server",
