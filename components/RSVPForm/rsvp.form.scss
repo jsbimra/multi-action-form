@@ -1,5 +1,8 @@
 .rsvp-form-wrapper {
-
+    min-height: 450px;
+    transition: all ease-in .8s;
+    visibility: hidden;
+    
     h1 {
         text-align: center;
         padding-bottom: 10px;

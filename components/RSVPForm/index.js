@@ -56,7 +56,7 @@ function RSVPForm(props) {
     // console.log( "state.rsvp.selectedType ", typeof state.rsvp.selectedType);
 
     return (
-        <div className="rsvp-form-wrapper">
+        <div className="rsvp-form-wrapper" style={{visibility: 'visible'}}>
             {/* {'state.rsvp.isSubmitSuccess value: ' + state.rsvp.isSubmitSuccess} */}
 
             <h1>{props.title}</h1>

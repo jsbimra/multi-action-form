@@ -24,8 +24,8 @@ class MyApp extends App {
 }
 
 MyApp.getInitialProps = async (appContext) => {
-    const appProps = await App.getInitialProps(appContext)
-    return { ...appProps }
+    const pageProps = await App.getInitialProps(appContext)
+    return { ...pageProps }
 }
 
 export default appWithTranslation(MyApp)

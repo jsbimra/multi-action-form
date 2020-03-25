@@ -5,7 +5,7 @@ export const CAPTCHA_SITE_KEY_V2 = '6LcsG-IUAAAAAFXGSgqJMqlTnoeX3jTsfVaN7AJq'; /
 
 export const CAPTCHA_VERSION_2 = 'V2';
 export const MESSAGE_HIDE_DURATION = 6000;
-export const WELCOME_SCREEN_TIMEOUT = 500;
+export const WELCOME_SCREEN_TIMEOUT = 1000;
 export const MOBILE_MAX_WIDTH = 767;
 export const TABLET_MAX_WIDTH = 1024;
 export const PLACEHOLDER_IMAGE = "https://via.placeholder.com/1000";
