@@ -121,7 +121,7 @@ function RSVPPersonal({ props }) {
         setVerifyPostData(queryData);
 
         if (queryData) {
-            console.log('verifyPostData found', queryData);
+            // console.log('verifyPostData found', queryData);
 
             actions.rsvp.verifyValidSIDKTPUser(JSON.stringify(queryData)).then(resp => {
                 // console.log("verify response ", resp);
@@ -498,14 +498,22 @@ function RSVPPersonal({ props }) {
 
                         <div className="form-group">
                             <div className="g-recaptcha" id={captcha.id}></div>
-                            <input type="hidden"
+                            {/* <input type="hidden"
                                 id={captcha.hiddenField.name}
                                 name={captcha.hiddenField.name}
                                 // defaultValue=""
                                 ref={register({
                                     required: captcha.validation.required_msg
                                 })} />
-                            <ErrorMessage as="p" errors={errors} name={captcha.hiddenField.name} />
+                            <ErrorMessage as="p" errors={errors} name={captcha.hiddenField.name} /> 
+                            
+                            WITH REQUIRED VALIATION */}
+
+                            {/*  FOR PROD TESTING ONLY */}
+                             <input type="hidden"
+                                id={captcha.hiddenField.name}
+                                name={captcha.hiddenField.name}
+                            />
                         </div>
 
                         <div className="form-group text-center">
@@ -527,7 +535,7 @@ function RSVPPersonal({ props }) {
     return form;
 }
 
-export default withTranslation(['common', 'rsvp'])(RSVPPersonal);
+export default withTranslation(['common', 'rsvp'],{useSuspense: true})(RSVPPersonal);
 
 // RSVPPersonal.getInitialProps = async () => ({
 //     namespacesRequired: ['common', 'rsvp'],

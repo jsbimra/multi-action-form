@@ -1,3 +1,9 @@
+
+//Bootstrap css
+import 'bootstrap/dist/css/bootstrap.min.css';
+//Index.scss file should be above layout layout and components after Bootstrap css
+import styles from '../scss/index.scss';
+
 // import { Suspense } from 'react';
 import * as React from 'react';
 import PropTypes from 'prop-types';
@@ -7,10 +13,6 @@ import { createOvermind } from 'overmind';
 import { Provider } from 'overmind-react';
 import { config } from '../overmind';
 
-//Bootstrap css
-import 'bootstrap/dist/css/bootstrap.min.css';
-//Index.scss file should be above layout layout and components after Bootstrap css
-import styles from './index.scss';
 
 //Custom Layout Components
 import LandingPage from './landing';
@@ -40,4 +42,4 @@ Index.propTypes = {
 
 // export default Index;
 
-export default withTranslation('common')(Index);
+export default withTranslation(['common', 'rsvp'],{useSuspense: true})(Index);

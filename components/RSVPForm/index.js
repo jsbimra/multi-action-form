@@ -1,27 +1,27 @@
+import './rsvp.form.scss';
+
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import { animateScroll as scroll } from 'react-scroll';
 
-import './rsvp.form.scss';
+import { useOvermind } from '../../overmind';
+import { withTranslation } from '../../i18n';
+import { useTranslation } from 'react-i18next';
+import { removeCaptcha, scrollOptions } from '../../util';
 
 import RSVPPersonal from './personal';
 import RSVPEntity from './entity';
 import RSVProxyHolder from './proxy-holder';
-import { useOvermind } from '../../overmind';
 
-import { withTranslation } from '../../i18n';
-import { useTranslation } from 'react-i18next';
-import { removeCaptcha, scrollOptions } from '../../util';
 import SuccessView from '../SuccessView';
 import Loader from '../Loader';
 
-function RSVPForm(props) {
+function RSVPForm({title, t}) {
     const { state, actions } = useOvermind();
     // console.log('STATE from RSVP form file ', state);
     // console.log('ACTIONS from RSVP form file ', actions);
 
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const types = t("rsvp:types", { returnObjects: true });
     const personal = t("rsvp:personal", { returnObjects: true });
     const entity = t("rsvp:entity", { returnObjects: true });
@@ -59,7 +59,7 @@ function RSVPForm(props) {
         <div className="rsvp-form-wrapper" style={{visibility: 'visible'}}>
             {/* {'state.rsvp.isSubmitSuccess value: ' + state.rsvp.isSubmitSuccess} */}
 
-            <h1>{props.title}</h1>
+            <h1>{title}</h1>
             {state.rsvp.isSubmitSuccess ? (<SuccessView success={successData} />) :
                 (<React.Fragment>
                     <div className="form-group">
@@ -68,7 +68,7 @@ function RSVPForm(props) {
                             className="form-control" 
                             value={state.rsvp.selectedType} 
                             onChange={(e) => handleRSVPTypeChange(e)}>
-                            {types.map((type, i) => (<option key={i} value={type.value}>{type.text}</option>))}
+                            {types && typeof types === 'object' ? types.map((type, i) => (<option key={i} value={type.value}>{type.text}</option>)) : null}
                         </select>
                     </div>
                     {/* {'state.rsvp.selectedType : ' + state.rsvp.selectedType} */}
@@ -83,12 +83,14 @@ function RSVPForm(props) {
     )
 }
 
-export default withTranslation(['common', 'rsvp'])(RSVPForm);
 
-// RSVPForm.getInitialProps = async () => ({
-//     namespacesRequired: ['common', 'rsvp'],
-// })
+RSVPForm.getInitialProps = async () => ({
+    namespacesRequired: ['common', 'rsvp'],
+})
 
-// RSVPForm.propTypes = {
-//     t: PropTypes.func.isRequired,
-// }
+RSVPForm.propTypes = {
+    t: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+}
+
+export default withTranslation(['common', 'rsvp'], {useSuspense: true})(RSVPForm);

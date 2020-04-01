@@ -1,3 +1,5 @@
+// import '../scss/index.scss';
+
 //React
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
@@ -40,8 +42,6 @@ function LandingPage({ t }) {
     )
 };
 
-export default withTranslation(['common', 'rsvp'])(LandingPage);
-
 LandingPage.getInitialProps = async () => ({
     namespacesRequired: ['common', 'rsvp'],
 })
@@ -49,3 +49,5 @@ LandingPage.getInitialProps = async () => ({
 LandingPage.propTypes = {
     t: PropTypes.func.isRequired,
 }
+
+export default withTranslation(['common', 'rsvp'],{useSuspense: true})(LandingPage);

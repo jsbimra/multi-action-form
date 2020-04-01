@@ -5,7 +5,8 @@ export const CAPTCHA_SITE_KEY_V2 = '6LcsG-IUAAAAAFXGSgqJMqlTnoeX3jTsfVaN7AJq'; /
 
 export const CAPTCHA_VERSION_2 = 'V2';
 export const MESSAGE_HIDE_DURATION = 6000;
-export const WELCOME_SCREEN_TIMEOUT = 1000;
+export const WELCOME_SCREEN_TIMEOUT = 1500;
+export const SUCCESS_SCREEN_TIMEOUT = 2500;
 export const MOBILE_MAX_WIDTH = 767;
 export const TABLET_MAX_WIDTH = 1024;
 export const PLACEHOLDER_IMAGE = "https://via.placeholder.com/1000";
@@ -17,8 +18,9 @@ export const RSVP_STAKE_HOLDER_TYPE = {
    proxyholder: 3,
 }
 
-export const API_BASE_URL = "//153.92.5.209:3001";
-export const API_BASE_URL_2 = "//153.92.5.209:3000";
+//OLD LOCAL DEV END-POINTS
+// export const API_BASE_URL = "//153.92.5.209:3001";
+// export const API_BASE_URL_2 = "//153.92.5.209:3000";
 
 export const API_SERVICES = {
    VALIDATE_SID_KTP: '/services/validate-sid-ktp',

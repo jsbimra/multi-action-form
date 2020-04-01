@@ -1,3 +1,8 @@
+
+//Bootstrap css
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../scss/index.scss';
+
 import PropTypes from 'prop-types';
 import { createOvermind } from 'overmind';
 import { Provider } from 'overmind-react';
@@ -5,10 +10,6 @@ import { Provider } from 'overmind-react';
 //Overmind state management
 import { config, useOvermind } from '../overmind';
 
-//Bootstrap css
-import 'bootstrap/dist/css/bootstrap.min.css';
-//Index.scss file should be above layout layout and components after Bootstrap css
-import styles from './index.scss';
 import Layout from "../components/Layout";
 import QRScanner from '../components/QRScanner';
 import { withTranslation } from 'react-i18next';

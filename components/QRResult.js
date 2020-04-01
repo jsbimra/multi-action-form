@@ -6,12 +6,13 @@ if (process.browser) {
     var QrReader = require('react-qr-scanner')
 }
 
+import '../scss/common.scss';
+
 //React
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 //i18n
 import { withTranslation } from '../i18n';
-import './common.scss';
 import { useOvermind } from '../overmind';
 
 const QRResult = (props) => {

@@ -1,19 +1,31 @@
-// import Link from 'next/link';
 import './header.scss';
+
+// import Link from 'next/link';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { i18n, Link, withTranslation, Router } from '../i18n';
+import { useTranslation } from 'react-i18next';
+
 
 const linkStyle = {
     marginRight: 15
 };
-import { i18n, Link } from '../i18n';
-import { useTranslation } from 'react-i18next';
 
-const Header = (props) => {
-    const { t} = useTranslation();
+const Header = ({handleLanguageChange, t}) => {
+    // const { t} = useTranslation();
     // console.log('Header.js ', t("lang"));
 
     const changeLanguage = lng => {
         // console.log("Change Language triggered!", props);
-        props.handleLanguageChange(lng);
+        handleLanguageChange(lng);
+    }
+
+    const refreshPage = (e) => {
+        e.preventDefault();
+        Router.push('/');
+        setTimeout(() => {
+            window.location.reload();
+        }, 200);
     }
 
     return (
@@ -21,7 +33,7 @@ const Header = (props) => {
             <div className="container">
                 {/* <h1>{props.title}</h1> */}
                 <nav>
-                    <Link href="/"><h6 className="d-inline"><a href="/">Multi Doable Form</a></h6></Link>
+                    <a href="/" style={{cursor: 'pointer'}} onClick={(e) => refreshPage(e)}><h6 className="d-inline"><a href="/">Multi Doable Form</a></h6></a>
                     <ul className="nav float-right d-none">
                         {/* <li className="nav-item">
                             <Link href="/">
@@ -47,4 +59,11 @@ const Header = (props) => {
 //     console.log(req.language, i18n.language)
 //     const currentLanguage = req ? req.language : i18n.language
 // }
-export default Header;
+
+Header.propTypes = {
+    t: PropTypes.func.isRequired,
+    handleLanguageChange: PropTypes.func.isRequired,
+    
+  }
+
+export default withTranslation(['common', 'rsvp'],{useSuspense: true})(Header);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import './common.scss';
+import '../scss/common.scss';
 
 export default function Loader(props) {
     const { message } = props.message ? props : { message: "Loading..." };

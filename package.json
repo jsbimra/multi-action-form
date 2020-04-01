@@ -1,5 +1,5 @@
 {
-  "name": "multi-doable-form",
+  "name": "rsvp-next",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,9 @@
     "dev": "node server.js",
     "build": "next build",
     "export": "next export",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production ENV=production node server.js",
+    "start:staging": "NODE_ENV=production ENV=staging node server.js",
+    "start:prod": "NODE_ENV=production ENV=production node server.js"
   },
   "keywords": [],
   "author": "",

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withTranslation } from '../i18n';
 
-import './common.scss';
+import '../scss/common.scss';
 import { useTranslation } from 'react-i18next';
 
 function Welcome(props) {

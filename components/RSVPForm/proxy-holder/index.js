@@ -386,8 +386,6 @@ function RSVPProxyHolder({ props }) {
     return form;
 }
 
-export default withTranslation(['common', 'rsvp'])(RSVPProxyHolder);
-
 RSVPProxyHolder.getInitialProps = async () => ({
     namespacesRequired: ['common', 'rsvp'],
 })
@@ -395,3 +393,5 @@ RSVPProxyHolder.getInitialProps = async () => ({
 RSVPProxyHolder.propTypes = {
     t: PropTypes.func.isRequired,
 }
+
+export default withTranslation(['common', 'rsvp'],{useSuspense: true})(RSVPProxyHolder);

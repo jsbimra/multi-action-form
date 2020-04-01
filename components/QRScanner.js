@@ -6,7 +6,7 @@ if (process.browser) {
     var QrReader = require('react-qr-scanner')
 }
 
-import './common.scss';
+import '../scss/common.scss';
 
 //React
 import React, { useState, useEffect } from 'react';

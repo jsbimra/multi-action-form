@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { API_BASE_URL, API_SERVICES } from '../../../util/constants';
+import { API_ROOT } from '../../../api.config';
+import { API_SERVICES } from '../../../util/constants';
 
 export default (req, res) => {
 
@@ -7,7 +8,7 @@ export default (req, res) => {
         // Process a POST request
         console.log('Body response ', req.body);
 
-        const promiseReq = axios.post(`${API_BASE_URL}${API_SERVICES.VALIDATE_SID_KTP}`, req.body)
+        const promiseReq = axios.post(`${API_ROOT}${API_SERVICES.VALIDATE_SID_KTP}`, req.body)
 
         promiseReq.then(resp => {
             console.log('response data ', resp.data);

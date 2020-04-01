@@ -1,8 +1,23 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
-import './common.scss';
+import '../scss/common.scss';
+import { SUCCESS_SCREEN_TIMEOUT } from './../util/constants';
+import { useOvermind } from './../overmind';
 
 export default function SuccessView(props) {
+
+    const { state, actions } = useOvermind();
+
+    useEffect(() => {
+        const st = setTimeout(() => {
+            console.log('to hide Success timeout trigger')
+            actions.rsvp.updateSubmitSuccess(true);
+        }, SUCCESS_SCREEN_TIMEOUT);
+
+        return () => {
+            clearTimeout(st);
+        }
+    });
 
     return (
         <div className="text-center comp-success-view">

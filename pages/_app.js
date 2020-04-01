@@ -16,6 +16,10 @@ class MyApp extends App {
                     <link rel="manifest" href="/static/site.webmanifest" />
                     <meta name="msapplication-TileColor" content="#da532c" />
                     <meta name="theme-color" content="#ffffff" />
+
+                    {/* for no indexing in search result */}
+                    <meta name="robots" content="noindex,follow"/>
+
                 </Head>
                 <Component {...pageProps} />
             </React.Fragment>
@@ -24,8 +28,8 @@ class MyApp extends App {
 }
 
 MyApp.getInitialProps = async (appContext) => {
-    const pageProps = await App.getInitialProps(appContext)
-    return { ...pageProps }
+const pageProps = await App.getInitialProps(appContext)
+return { ...pageProps }
 }
 
 export default appWithTranslation(MyApp)

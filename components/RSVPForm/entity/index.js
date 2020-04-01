@@ -535,13 +535,20 @@ function RSVPEntity({ props }) {
 
                         <div className="form-group">
                             <div className="g-recaptcha" id={captcha.id}></div>
-                            <input type="hidden" 
+                            {/* <input type="hidden" 
                                 id={captcha.hiddenField.name} 
                                 name={captcha.hiddenField.name}
                                 ref={register({
                                     required: captcha.validation.required_msg
                                 })} />
-                            <ErrorMessage as="p" errors={errors} name={captcha.hiddenField.name} />
+                                <ErrorMessage as="p" errors={errors} name={captcha.hiddenField.name} />  */}
+                            {/* WITH REQUIRED VALIATION */}
+
+                            {/*  FOR PROD TESTING ONLY */}
+                            <input type="hidden" 
+                                id={captcha.hiddenField.name} 
+                                name={captcha.hiddenField.name}
+                            />
                         </div>
 
                         <div className="form-group text-center">
@@ -563,7 +570,7 @@ function RSVPEntity({ props }) {
     return form;
 }
 
-export default withTranslation(['common', 'rsvp'])(RSVPEntity);
+export default withTranslation(['common', 'rsvp'], {useSuspense: true})(RSVPEntity);
 
 // RSVPEntity.getInitialProps = async () => ({
 //     namespacesRequired: ['common', 'rsvp'],

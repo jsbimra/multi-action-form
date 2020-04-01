@@ -59,7 +59,7 @@ function Layout(props) {
 
 };
 
-export default withTranslation(['common', 'rsvp'])(Layout);
+export default withTranslation(['common', 'rsvp'], {useSuspense: true })(Layout);
 
 // Layout.getInitialProps = async () => ({
 //     namespacesRequired: ['common', 'rsvp'],
