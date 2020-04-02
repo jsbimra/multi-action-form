@@ -12,12 +12,12 @@ const withSassConfig = {
 }
 
 const nextConfig = {
-    target: 'serverless', //for this check https://nextjs.org/docs/api-reference/next.config.js/build-target
+    // target: 'serverless', //for this check https://nextjs.org/docs/api-reference/next.config.js/build-target
     exportTrailingSlash: true,
     exportPathMap: function () {
       return {
         '/': { page: '/' },
-        '/qrscan': { page: '/QRscan' },
+        '/qrscan': { page: '/qrscan' },
       };
     },
     devIndicators: {

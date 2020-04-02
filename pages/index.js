@@ -2,7 +2,7 @@
 //Bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
 //Index.scss file should be above layout layout and components after Bootstrap css
-import styles from '../scss/index.scss';
+import '../scss/index.scss';
 
 // import { Suspense } from 'react';
 import * as React from 'react';

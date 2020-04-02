@@ -10,7 +10,6 @@ import { Provider } from 'overmind-react';
 //Overmind state management
 import { config, useOvermind } from '../overmind';
 
-import Layout from "../components/Layout";
 import QRScanner from '../components/QRScanner';
 import { withTranslation } from 'react-i18next';
 
@@ -19,13 +18,11 @@ const overmind = createOvermind(config, {
 });
 
 
-function QRScan({t}) {
+function QRScan({ t }) {
 
     return (
         <Provider value={overmind}>
-            <Layout>
-                <QRScanner />
-            </Layout>
+            <QRScanner />
         </Provider>
 
     )

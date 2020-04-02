@@ -36,9 +36,9 @@ function LandingPage({ t }) {
         }
     });
     return (
-        <Layout>
+        <>
             {welcome ? (<Welcome />) : (<RSVPForm title={t("title")}></RSVPForm>)}
-        </Layout>
+        </>
     )
 };
 

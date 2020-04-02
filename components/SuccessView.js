@@ -10,8 +10,8 @@ export default function SuccessView(props) {
 
     useEffect(() => {
         const st = setTimeout(() => {
-            console.log('to hide Success timeout trigger')
-            actions.rsvp.updateSubmitSuccess(true);
+            // console.log('to hide Success timeout trigger')
+            actions.rsvp.updateSubmitSuccess(false);
         }, SUCCESS_SCREEN_TIMEOUT);
 
         return () => {
