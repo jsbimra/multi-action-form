@@ -1,40 +1,22 @@
-// @font-face {
-// 	font-family: 'AxiataBook';
-// 	src: url('./AxiataBook.ttf') format('truetype'),
-// 		url('./AxiataBook.woff') format('woff'),
-// 		url('./AxiataBook.woff2') format('woff2');
-// }
-
-// @font-face {
-// 	font-family: 'AxiataBold';
-// 	src: url('./AxiataBold.ttf') format('truetype'),
-// 		url('./AxiataBold.woff') format('woff'),
-// 		url('./AxiataBold.woff2') format('woff2');
-// }
-
-// @font-face {
-// 	font-family: 'AxiataMedium';
-// 	src: url('./AxiataMedium.ttf') format('truetype'),
-// }
 
 @font-face {
-  font-family: 'AxiataBook';
-  src: url("./AxiataBook.ttf") format("truetype"), url("./AxiataBook.woff") format("woff"), url("./AxiataBook.woff2") format("woff2");
+  font-family: 'MercyBook';
+  src: url("./MercyBook.ttf") format("truetype"), url("./MercyBook.woff") format("woff"), url("./MercyBook.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'AxiataBold';
-  src: url("./AxiataBold.ttf") format("truetype"), url("./AxiataBold.woff") format("woff"), url("./AxiataBold.woff2") format("woff2");
+  font-family: 'MercyBold';
+  src: url("./MercyBold.ttf") format("truetype"), url("./MercyBold.woff") format("woff"), url("./MercyBold.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'AxiataMedium';
-  src: url("./AxiataMedium.ttf") format("truetype"), url("./AxiataMedium.woff") format("woff");
+  font-family: 'MercyMedium';
+  src: url("./MercyMedium.ttf") format("truetype"), url("./MercyMedium.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Axiata';
-  src: url("./AxiataMedium.ttf") format("truetype"), url("./AxiataMedium.woff") format("woff");
+  font-family: 'Mercy';
+  src: url("./Mercy.ttf") format("truetype"), url("./Mercy.woff") format("woff");
 }
 
 @font-face {
@@ -56,15 +38,15 @@
 }
 
 .font-axiata-bold {
-  font-family: 'AxiataBold' !important;
+  font-family: 'MercyBold' !important;
 }
 
 .font-axiata-medium {
-  font-family: 'AxiataMedium' !important;
+  font-family: 'MercyMedium' !important;
 }
 
 .font-axiata-book {
-  font-family: 'AxiataBook' !important;
+  font-family: 'MercyBook' !important;
 }
 
 
@@ -74,7 +56,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'AxiataBold';
+  font-family: 'MercyBold';
   line-height: 1.3em;
   letter-spacing: 3px;
 }
