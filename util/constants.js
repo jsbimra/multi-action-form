@@ -1,7 +1,7 @@
-export const CAPTCHA_SITE_KEY_V3 = '6LeBw48UAAAAAKdEZJS0WvRM3YId-s1kaw6rd1O8';
+export const CAPTCHA_SITE_KEY_V3 = '6';
 export const CAPTCHA_VERSION_3 = 'V3';
-// export const CAPTCHA_SITE_KEY_V2 = '6LdGrVUUAAAAAJ2sLr5qoMu7XMPDIxZ1MX-HRT72';
-export const CAPTCHA_SITE_KEY_V2 = '6LcsG-IUAAAAAFXGSgqJMqlTnoeX3jTsfVaN7AJq'; //TEMP as per EKAL
+// export const CAPTCHA_SITE_KEY_V2 = '';
+export const CAPTCHA_SITE_KEY_V2 = ''; //TEMP
 
 export const CAPTCHA_VERSION_2 = 'V2';
 export const MESSAGE_HIDE_DURATION = 6000;
@@ -19,8 +19,8 @@ export const RSVP_STAKE_HOLDER_TYPE = {
 }
 
 //OLD LOCAL DEV END-POINTS
-// export const API_BASE_URL = "//153.92.5.209:3001";
-// export const API_BASE_URL_2 = "//153.92.5.209:3000";
+// export const API_BASE_URL = "/:3001";
+// export const API_BASE_URL_2 = "//:3000";
 
 export const API_SERVICES = {
    VALIDATE_SID_KTP: '/services/validate-sid-ktp',
@@ -30,8 +30,8 @@ export const API_SERVICES = {
 };
 
 export const LS_KEY = {
-   RSVP_TOKENS: 'xlRSVPTokens',
-   RSVP_FORM_DATA: 'xlRSVPFormData',
+   RSVP_TOKENS: 'xvRSVPTokens',
+   RSVP_FORM_DATA: 'xvRSVPFormData',
 };
 
 export const phonePattern1 = /(^(?:(?:\+|0{0,2})62(\s*[\ -]\s*)?|[0]?)?[0]|[62]$)([0-9]{5,15}$)/;
